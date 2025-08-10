@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriVida Games - Minijuegos Nutricionales</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0f;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Fondo animado */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0a0a0f, #1a1a2e, #16213e);
+            animation: bgShift 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% { background: linear-gradient(45deg, #0a0a0f, #1a1a2e, #16213e); }
+            100% { background: linear-gradient(45deg, #16213e, #1a1a2e, #0a0a0f); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff) 1;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,0,110,0.3);
+            border-radius: 15px;
+            padding: 10px 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.2);
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #ff006e;
+            font-size: 1.2em;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 3em;
+            font-weight: 900;
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(131, 56, 236, 0.5);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .game-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #ff006e);
+            border-radius: 22px;
+            z-index: -1;
+            animation: borderRotate 4s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(255, 0, 110, 0.3);
+        }
+
+        .game-icon {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.5));
+        }
+
+        .game-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #8338ec;
+        }
+
+        .game-description {
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .game-level {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        .level-info {
+            font-family: 'Orbitron', monospace;
+            color: #3a86ff;
+        }
+
+        .best-score {
+            font-family: 'Orbitron', monospace;
+            color: #ff006e;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff006e, #8338ec);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(255, 0, 110, 0.3);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(255, 0, 110, 0.6);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(10, 10, 15, 0.95);
+            border: 2px solid #8338ec;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 100px rgba(131, 56, 236, 0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #ff006e;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 20px #ff006e;
+        }
+
+        .game-area {
+            min-height: 400px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .nutrient-card {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            border: 2px solid #8338ec;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px 0;
+        }
+
+        .nutrient-card:hover {
+            background: linear-gradient(45deg, #8338ec, #ff006e);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(131, 56, 236, 0.5);
+        }
+
+        .quiz-question {
+            background: rgba(131, 56, 236, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid #8338ec;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #3a86ff;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: linear-gradient(45deg, #3a86ff, #8338ec);
+            transform: scale(1.02);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .correct {
+            background: linear-gradient(45deg, #00f5ff, #00d4aa) !important;
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+        }
+
+        .incorrect {
+            background: linear-gradient(45deg, #ff006e, #ff4757) !important;
+            box-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px rgba(131, 56, 236, 0.5);
+        }
+
+        .game-timer {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 2em;
+            color: #ff006e;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+        }
+
+        .achievement {
+            position: fixed;
+            top: 50%;
+            right: -400px;
+            background: linear-gradient(45deg, #00f5ff, #00d4aa);
+            color: #000;
+            padding: 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            transition: right 0.5s ease;
+            z-index: 1001;
+            box-shadow: 0 0 50px rgba(0, 245, 255, 0.5);
+            max-width: 350px;
+        }
+
+        .achievement.show {
+            right: 20px;
+        }
+
+        /* Boss Battle Styles */
+        .boss-game {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(to bottom, #1a1a2e, #16213e);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.boss-player {
+    position: absolute;
+    left: 50px;
+    font-size: 3em;
+    transition: top 0.1s ease;
+    z-index: 10;
+}
+
+.boss-enemy {
+    position: absolute;
+    right: 50px;
+    top: 50px;
+    font-size: 4em;
+    animation: bossFloat 2s ease-in-out infinite;
+    z-index: 5;
+}
+
+@keyframes bossFloat {
+    0%, 100% { transform: translateY(0px) rotate(-5deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.health-bar {
+    width: 200px;
+    height: 15px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.health-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.player-health {
+    background: linear-gradient(90deg, #00f5ff, #00d4aa);
+}
+
+.boss-health {
+    background: linear-gradient(90deg, #ff006e, #ff4757);
+}
+
+.obstacle {
+    position: absolute;
+    font-size: 2em;
+    z-index: 8;
+    animation: moveLeft 3s linear;
+}
+
+.powerup {
+    position: absolute;
+    font-size: 2em;
+    z-index: 8;
+    animation: moveLeft 4s linear, powerupGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes moveLeft {
+    from { right: -60px; }
+    to { right: 100%; }
+}
+
+@keyframes powerupGlow {
+    from { filter: drop-shadow(0 0 5px #00f5ff); }
+    to { filter: drop-shadow(0 0 15px #00d4aa); }
+}
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2em;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+            
+            .user-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* --- Blackjack Nutritional Stage --- */
+#blackjackArea {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8em;
+    margin: 20px 0;
+    color: #00f5ff;
+    text-align: center;
+    user-select: none;
+}
+
+#blackjackResult {
+    margin-top: 20px;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
+    color: #ff006e;
+}
+
+#hitBtn, #standBtn {
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 12px 25px;
+    margin: 10px;
+    border-radius: 15px;
+    border: none;
+    color: white;
+    background: linear-gradient(45deg, #8338ec, #3a86ff);
+    box-shadow: 0 0 20px rgba(131, 56, 236, 0.5);
+    transition: background 0.3s ease;
+}
+
+#hitBtn:hover, #standBtn:hover {
+    background: linear-gradient(45deg, #ff006e, #8338ec);
+    box-shadow: 0 0 40px rgba(255, 0, 110, 0.7);
+}
+
+/* --- Puzzle Stage --- */
+#puzzleArea {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.puzzle-piece {
+    width: 100px;
+    height: 100px;
+    font-size: 3em;
+    color: white;
+    border-radius: 15px;
+    cursor: grab;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    text-shadow: 0 0 15px rgba(131, 56, 236, 0.8);
+    transition: transform 0.2s ease;
+    background: linear-gradient(45deg, #8338ec, #3a86ff);
+    box-shadow: 0 0 25px rgba(131, 56, 236, 0.6);
+}
+
+.puzzle-piece:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+
+#checkPuzzleBtn {
+    margin-top: 15px;
+    padding: 12px 30px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #ff006e, #8338ec);
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
+    transition: background 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#checkPuzzleBtn:hover {
+    background: linear-gradient(45deg, #3a86ff, #8338ec);
+    box-shadow: 0 0 50px rgba(58, 134, 255, 0.7);
+}
+
+#puzzleResult {
+    margin-top: 20px;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
+    color: #00d4aa;
+}
+
+/* --- Go Go Space Monkey Stage --- */
+#goGoGameArea {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(58, 134, 255, 0.8);
+}
+
+#player {
+    position: absolute;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    font-size: 3.5em;
+    user-select: none;
+    transition: top 0.05s ease;
+    text-shadow: 0 0 10px #00f5ff;
+}
+
+.obstacle {
+    position: absolute;
+    font-size: 3em;
+    z-index: 10;
+    user-select: none;
+    filter: drop-shadow(0 0 5px #ff006e);
+    animation: moveLeft 3s linear forwards;
+}
+
+.powerup {
+    position: absolute;
+    font-size: 3em;
+    z-index: 10;
+    user-select: none;
+    filter: drop-shadow(0 0 8px #00d4aa);
+    animation: moveLeft 4s linear forwards, powerupGlow 1s ease-in-out infinite alternate;
+}
+
+#goGoTimer {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5em;
+    color: #00d4aa;
+    text-align: center;
+    margin-top: 20px;
+    text-shadow: 0 0 20px rgba(0, 212, 170, 0.8);
+}
+
+/* --- Button states and user feedback --- */
+.correct-feedback {
+    color: #00d4aa;
+    font-weight: 700;
+    text-shadow: 0 0 15px #00d4aa;
+}
+
+.incorrect-feedback {
+    color: #ff006e;
+    font-weight: 700;
+    text-shadow: 0 0 15px #ff006e;
+}
+
+/* --- Responsive tweaks --- */
+@media (max-width: 768px) {
+    .puzzle-piece {
+        width: 70px;
+        height: 70px;
+        font-size: 2.2em;
+    }
+
+    #hitBtn, #standBtn, #checkPuzzleBtn {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+
+    #goGoGameArea {
+        height: 220px;
+    }
+
+    #player {
+        width: 45px;
+        height: 45px;
+        font-size: 2.5em;
+    }
+
+    .obstacle, .powerup {
+        font-size: 2em;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="particles"></div>
+    </div>
+
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">🎮 NUTRIVIDA</div>
+            <div class="user-stats">
+                <div class="stat-box">
+                    <div class="stat-label">Nivel</div>
+                    <div class="stat-value" id="userLevel">1</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Puntos Totales</div>
+                    <div class="stat-value" id="totalPoints">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Logros</div>
+                    <div class="stat-value" id="achievements">0/15</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="title">🚀 MINIJUEGOS NUTRICIONALES</h1>
+
+        <div class="games-grid">
+            <!-- Game 1: Nutrient Match -->
+            <div class="game-card" onclick="openGame('nutrientMatch')">
+                <div class="game-icon">🧬</div>
+                <h3 class="game-title">NUTRIENT MATCH</h3>
+                <p class="game-description">Conecta los alimentos con sus nutrientes principales. ¡Pon a prueba tu conocimiento nutricional!</p>
+                <div class="game-level">
+                    <span class="level-info">Mejor: <span id="nmScore">0</span></span>
+                </div>
+                <button class="play-btn">▶ JUGAR AHORA</button>
+            </div>
+
+            <!-- Game 2: Calorie Calculator -->
+            <div class="game-card" onclick="openGame('calorieCalculator')">
+                <div class="game-icon">⚖️</div>
+                <h3 class="game-title">CALORIE MASTER</h3>
+                <p class="game-description">Calcula las calorías de diferentes combinaciones de alimentos. ¡Conviértete en un experto!</p>
+                <div class="game-level">
+                    <span class="level-info">Mejor: <span id="ccScore">0</span></span>
+                </div>
+                <button class="play-btn">▶ JUGAR AHORA</button>
+            </div>
+
+            <!-- Game 3: Healthy vs Unhealthy -->
+            <div class="game-card" onclick="openGame('healthyChoice')">
+                <div class="game-icon">🍎</div>
+                <h3 class="game-title">HEALTHY CHOICE</h3>
+                <p class="game-description">Clasifica los alimentos como saludables o no saludables. ¡Velocidad y precisión!</p>
+                <div class="game-level">
+                    <span class="level-info">Mejor: <span id="hcScore">0</span></span>
+                </div>
+                <button class="play-btn">▶ JUGAR AHORA</button>
+            </div>
+
+            <!-- Game 4: Nutrition Quiz -->
+            <div class="game-card" onclick="openGame('nutritionQuiz')">
+                <div class="game-icon">🧠</div>
+                <h3 class="game-title">NUTRI QUIZ</h3>
+                <p class="game-description">Responde preguntas sobre nutrición y alimentación saludable. ¡Demuestra tu sabiduría!</p>
+                <div class="game-level">
+                    <span class="level-info">Mejor: <span id="nqScore">0</span></span>
+                </div>
+                <button class="play-btn">▶ JUGAR AHORA</button>
+            </div>
+
+            <!-- Game 5: Speed Nutrition -->
+            <div class="game-card" onclick="openGame('speedNutrition')">
+                <div class="game-icon">⚡</div>
+                <h3 class="game-title">SPEED NUTRITION</h3>
+                <p class="game-description">Responde preguntas de nutrición contra el reloj. ¡Velocidad mental al máximo!</p>
+                <div class="game-level">
+                    <span class="level-info">Mejor: <span id="snScore">0</span></span>
+                </div>
+                <button class="play-btn">▶ JUGAR AHORA</button>
+            </div>
+
+            <!-- Game 6: Boss Battle -->
+            <div class="game-card" onclick="openGame('bossBattle')" style="grid-column: 1 / -1;">
+                <div class="game-icon">🍔</div>
+                <h3 class="game-title">BOSS BATTLE: HAMBURGUESA MALIGNA</h3>
+                <p class="game-description">¡Conviértete en el Brócoli Héroe y derrota a la Hamburguesa Maligna esquivando comida chatarra!</p>
+                <div class="game-level">
+                    <span class="level-info">Mejor: <span id="bbScore">0</span></span>
+                </div>
+                <button class="play-btn">⚔️ BATALLA ÉPICA</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeGame()">&times;</button>
+            <h2 id="modalTitle" style="text-align: center; margin-bottom: 20px; font-family: 'Orbitron', monospace;"></h2>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="gameProgress" style="width: 0%"></div>
+            </div>
+            
+            <div class="game-timer" id="gameTimer">60</div>
+            
+            <div class="game-area" id="gameArea">
+                <!-- Game content will be loaded here -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <div id="currentScore" style="font-family: 'Orbitron', monospace; font-size: 1.5em; color: #8338ec;">Puntos: 0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement notification -->
+    <div class="achievement" id="achievementNotif">
+        <div style="font-weight: bold; margin-bottom: 5px;">🏆 ¡Logro Desbloqueado!</div>
+        <div id="achievementText"></div>
+    </div>
+
+    <script>
+        // Game State Management
+        
+
+  class GameState {
+    constructor() {
+        this.currentGame = null;
+        this.score = 0;
+        this.timeLeft = 60;
+        this.gameInterval = null;
+        this.totalPoints = this.loadData('totalPoints', 0);
+        this.achievements = this.loadData('achievements', 0);
+        this.userLevel = this.loadData('userLevel', 1);
+    }
+
+    loadData(key, defaultValue) {
+        try {
+            const value = localStorage.getItem(key);
+            return value !== null ? parseInt(value) : defaultValue;
+        } catch {
+            return defaultValue;
+        }
+    }
+
+    saveData() {
+        try {
+            localStorage.setItem('totalPoints', this.totalPoints);
+            localStorage.setItem('achievements', this.achievements);
+            localStorage.setItem('userLevel', this.userLevel);
+        } catch {
+            console.warn('No se pudo guardar el progreso');
+        }
+    }
+
+    updateUI() {
+        document.getElementById('totalPoints').textContent = this.totalPoints;
+        document.getElementById('achievements').textContent = `${this.achievements}/15`;
+        document.getElementById('userLevel').textContent = this.userLevel;
+    }
+}
+
+const state = new GameState();
+state.updateUI();
+class SoundManager {
+    constructor() {
+        this.audioContext = null;
+        this.enabled = true;
+        this.init();
+    }
+
+    init() {
+        try {
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch {
+            console.warn('Audio no disponible');
+            this.enabled = false;
+        }
+    }
+
+    playBeep(frequency, duration = 0.2, type = 'square', volume = 0.3) {
+        if (!this.enabled || !this.audioContext) return;
+
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        oscillator.frequency.value = frequency;
+        oscillator.type = type;
+
+        gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + duration);
+    }
+
+    correct() {
+        this.playBeep(800, 0.15);
+    }
+
+    incorrect() {
+        this.playBeep(300, 0.3);
+    }
+
+    victory() {
+        setTimeout(() => this.playBeep(523, 0.1), 0);
+        setTimeout(() => this.playBeep(659, 0.1), 100);
+        setTimeout(() => this.playBeep(784, 0.2), 200);
+    }
+
+    powerup() {
+        for(let i = 0; i < 5; i++) {
+            setTimeout(() => this.playBeep(400 + i * 100, 0.05), i * 50);
+        }
+    }
+}
+
+const sound = new SoundManager();
+const quizQuestions = [
+    {
+        question: "¿Cuál es la cantidad recomendada de agua diaria?",
+        options: ["1-2 litros", "2-3 litros", "3-4 litros", "4-5 litros"],
+        correct: 1,
+        points: 20
+    },
+    {
+        question: "¿Qué nutriente es más importante para el crecimiento muscular?",
+        options: ["Carbohidratos", "Proteínas", "Grasas", "Vitaminas"],
+        correct: 1,
+        points: 20
+    },
+    {
+        question: "¿Cuántas porciones de frutas y verduras se recomiendan al día?",
+        options: ["2-3", "5 o más", "1-2", "10 o más"],
+        correct: 1,
+        points: 20
+    },
+    {
+        question: "¿Cuál de estos alimentos tiene más vitamina C?",
+        options: ["Naranja", "Plátano", "Papa", "Carne"],
+        correct: 0,
+        points: 15
+    },
+    {
+        question: "¿Qué tipo de grasa es más saludable?",
+        options: ["Saturadas", "Trans", "Monoinsaturadas", "Ninguna"],
+        correct: 2,
+        points: 25
+    },
+    {
+        question: "¿Cuántas comidas principales se recomiendan al día?",
+        options: ["1-2", "3", "5-6", "No importa"],
+        correct: 1,
+        points: 15
+    },
+    {
+        question: "¿Qué mineral es esencial para los huesos?",
+        options: ["Hierro", "Calcio", "Potasio", "Zinc"],
+        correct: 1,
+        points: 20
+    },
+    {
+        question: "¿Cuál es el principal combustible del cerebro?",
+        options: ["Glucosa", "Grasas", "Proteínas", "Vitaminas"],
+        correct: 0,
+        points: 20
+    }
+];
+function shuffleArray(array) {
+    const arr = [...array];
+    for(let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+class NutriQuiz {
+    constructor(container, progressBar, timerDisplay, soundManager, onFinish) {
+        this.container = container;
+        this.progressBar = progressBar;
+        this.timerDisplay = timerDisplay;
+        this.sound = soundManager;
+        this.onFinish = onFinish;
+
+        this.questionsPool = shuffleArray(quizQuestions);
+        this.remainingQuestions = [...this.questionsPool];
+        this.currentQuestion = null;
+
+        this.score = 0;
+        this.timeLeft = 60;
+        this.timerId = null;
+        this.answeredCount = 0;
+    }
+
+    start() {
+        this.score = 0;
+        this.timeLeft = 60;
+        this.answeredCount = 0;
+        this.remainingQuestions = [...this.questionsPool];
+        this.updateProgress();
+        this.nextQuestion();
+        this.startTimer();
+        this.updateScore();
+    }
+
+    startTimer() {
+        this.timerDisplay.textContent = this.timeLeft;
+        clearInterval(this.timerId);
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            this.timerDisplay.textContent = this.timeLeft;
+            if(this.timeLeft <= 0){
+                this.end();
+            }
+        }, 1000);
+    }
+
+    updateProgress() {
+        const percent = (this.answeredCount / this.questionsPool.length) * 100;
+        this.progressBar.style.width = percent + '%';
+    }
+
+    nextQuestion() {
+        if(this.remainingQuestions.length === 0){
+            // Reiniciar ciclo con preguntas mezcladas
+            this.remainingQuestions = shuffleArray(this.questionsPool);
+            this.answeredCount = 0;
+        }
+
+        const idx = Math.floor(Math.random() * this.remainingQuestions.length);
+        this.currentQuestion = this.remainingQuestions.splice(idx, 1)[0];
+        this.renderQuestion();
+        this.updateProgress();
+    }
+
+    renderQuestion() {
+        this.container.innerHTML = '';
+
+        const questionEl = document.createElement('div');
+        questionEl.className = 'quiz-question';
+        questionEl.textContent = this.currentQuestion.question;
+        this.container.appendChild(questionEl);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'quiz-options';
+
+        this.currentQuestion.options.forEach((option, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = option;
+            btn.onclick = () => this.answer(index, btn);
+            optionsDiv.appendChild(btn);
+        });
+
+        this.container.appendChild(optionsDiv);
+    }
+
+    answer(selectedIndex, btn) {
+        const buttons = this.container.querySelectorAll('.option-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        const correctIndex = this.currentQuestion.correct;
+        const correctBtn = buttons[correctIndex];
+
+        if(selectedIndex === correctIndex){
+            btn.classList.add('correct');
+            this.sound.correct();
+            this.score += this.currentQuestion.points;
+        } else {
+            btn.classList.add('incorrect');
+            correctBtn.classList.add('correct');
+            this.sound.incorrect();
+        }
+
+        this.answeredCount++;
+        this.updateProgress();
+        this.updateScore();
+
+        setTimeout(() => {
+            if(this.timeLeft <= 0){
+                this.end();
+            } else {
+                this.nextQuestion();
+            }
+        }, 1200);
+    }
+
+    updateScore() {
+        document.getElementById('currentScore').textContent = 'Puntos: ' + this.score;
+    }
+
+    end() {
+        clearInterval(this.timerId);
+        this.onFinish(this.score);
+    }
+}
+const modal = document.getElementById('gameModal');
+const modalTitle = document.getElementById('modalTitle');
+const progressBar = document.getElementById('gameProgress');
+const gameTimer = document.getElementById('gameTimer');
+const gameArea = document.getElementById('gameArea');
+
+let currentQuizInstance = null;
+let currentBossBattleInstance = null;  // <--- aquí
+
+
+function openGame(gameKey) {
+    modal.style.display = 'flex';
+    state.currentGame = gameKey;
+    modalTitle.textContent = gameKey.toUpperCase().replace(/([A-Z])/g, ' $1').trim();
+
+    if(gameKey === 'bossBattle') {
+        currentBossBattleInstance = new BossBattle(gameArea, progressBar, gameTimer, sound, () => {
+            closeGame();
+        });
+        currentBossBattleInstance.start();
+        return; // para evitar que cargue texto "próximamente"
+    }
+
+    if(gameKey === 'nutritionQuiz') {
+        currentQuizInstance = new NutriQuiz(gameArea, progressBar, gameTimer, sound, (finalScore) => {
+            // ...
+        });
+        currentQuizInstance.start();
+        return;
+    }
+
+    // Juegos no implementados:
+    gameArea.innerHTML = `<p style="text-align:center; color:#ccc; margin-top:50px;">Próximamente: Juego ${gameKey}</p>`;
+    progressBar.style.width = '0%';
+    gameTimer.textContent = '';
+    document.getElementById('currentScore').textContent = 'Puntos: 0';
+}
+
+
+function closeGame() {
+    modal.style.display = 'none';
+
+    if(currentBossBattleInstance) {
+        clearInterval(currentBossBattleInstance.gameIntervalId);
+        clearInterval(currentBossBattleInstance.timerId);
+        currentBossBattleInstance = null;
+    }
+
+    if(currentQuizInstance) {
+        clearInterval(currentQuizInstance.timerId);
+        currentQuizInstance = null;
+    }
+
+    gameArea.innerHTML = '';
+    progressBar.style.width = '0%';
+    gameTimer.textContent = '';
+    document.getElementById('currentScore').textContent = 'Puntos: 0';
+}
+
+class BossBattle {
+  constructor(container, progressBar, timerDisplay, soundManager, onFinish) {
+    this.container = container;
+    this.progressBar = progressBar;
+    this.timerDisplay = timerDisplay;
+    this.sound = soundManager;
+    this.onFinish = onFinish;
+
+    this.stage = 1;
+    this.score = 0;
+
+    this.stages = {
+      1: new BossStageBlackjack(this),
+      2: new BossStagePuzzle(this),
+      3: new BossStageGoGo(this)
+    };
+  }
+
+  start() {
+    this.score = 0;
+    this.stage = 1;
+    this.container.innerHTML = '';
+    this.timerDisplay.textContent = '';
+    this.progressBar.style.width = '0%';
+
+    this.stages[this.stage].start();
+    this.updateProgressBar();
+  }
+
+  nextStage() {
+    this.stage++;
+    if(this.stage > 3) {
+      this.finish(true);
+      return;
+    }
+    this.container.innerHTML = '';
+    this.stages[this.stage].start();
+    this.updateProgressBar();
+  }
+
+  updateProgressBar() {
+    const percent = (this.stage - 1) / 3 * 100;
+    this.progressBar.style.width = percent + '%';
+  }
+
+  addScore(points) {
+    this.score += points;
+    document.getElementById('currentScore').textContent = `Puntos: ${this.score}`;
+  }
+
+  finish(win) {
+    this.progressBar.style.width = '100%';
+    if(win) {
+      this.sound.victory();
+      alert(`¡Ganaste la Boss Battle! Puntos totales: ${this.score}`);
+      this.onFinish(this.score);
+    } else {
+      this.sound.incorrect();
+      alert('Perdiste la Boss Battle. ¡Intenta de nuevo!');
+      this.onFinish(this.score);
+    }
+  }
+}
+
+// STAGE 1: Blackjack Nutritional (simplificado)
+class BossStageBlackjack {
+  constructor(bossBattle) {
+    this.bossBattle = bossBattle;
+    this.container = bossBattle.container;
+    this.sound = bossBattle.sound;
+
+    this.playerSum = 0;
+    this.bossSum = 0;
+
+    this.cards = [
+      {name: 'Manzana', value: 5},
+      {name: 'Banana', value: 7},
+      {name: 'Hamburguesa', value: 10},
+      {name: 'Brócoli', value: 4},
+      {name: 'Pizza', value: 9},
+      {name: 'Zanahoria', value: 3},
+      {name: 'Refresco', value: 11},
+      {name: 'Naranja', value: 6}
+    ];
+  }
+
+  start() {
+    this.container.innerHTML = '<h3>Etapa 1: Blackjack Nutricional</h3><div id="blackjackArea"></div><button id="hitBtn">Pedir Carta</button><button id="standBtn">Plantarse</button><div id="blackjackResult"></div>';
+    this.playerSum = 0;
+    this.bossSum = this.randomCardValue();
+    this.updateStatus();
+
+    document.getElementById('hitBtn').onclick = () => this.hit();
+    document.getElementById('standBtn').onclick = () => this.stand();
+  }
+
+  randomCardValue() {
+    const card = this.cards[Math.floor(Math.random() * this.cards.length)];
+    return card.value;
+  }
+
+  hit() {
+    const cardValue = this.randomCardValue();
+    this.playerSum += cardValue;
+    this.sound.correct();
+    this.updateStatus();
+    if(this.playerSum > 21) {
+      this.endGame(false);
+    }
+  }
+
+  stand() {
+    while(this.bossSum < 17) {
+      this.bossSum += this.randomCardValue();
+    }
+    this.endGame(this.playerSum <= 21 && this.playerSum >= this.bossSum);
+  }
+
+  updateStatus() {
+    const area = document.getElementById('blackjackArea');
+    area.textContent = `Tu suma: ${this.playerSum} | Suma del Boss (oculta hasta plantarse)`;
+  }
+
+  endGame(playerWon) {
+    const resultDiv = document.getElementById('blackjackResult');
+    if(playerWon) {
+      resultDiv.textContent = '¡Ganaste esta etapa!';
+      this.bossBattle.addScore(100);
+      setTimeout(() => this.bossBattle.nextStage(), 1500);
+    } else {
+      resultDiv.textContent = 'Perdiste esta etapa...';
+      setTimeout(() => this.bossBattle.finish(false), 1500);
+    }
+  }
+}
+
+// STAGE 2: Puzzle simple de fruta (simplificado)
+class BossStagePuzzle {
+  constructor(bossBattle) {
+    this.bossBattle = bossBattle;
+    this.container = bossBattle.container;
+    this.sound = bossBattle.sound;
+  }
+
+  start() {
+    this.container.innerHTML = `
+      <h3>Etapa 2: Rompecabezas de Fruta</h3>
+      <p>Arma la imagen arrastrando las piezas (versión simplificada)</p>
+      <div id="puzzleArea" style="display:flex; gap:5px;">
+        <div draggable="true" class="puzzle-piece" data-index="2" style="width:80px; height:80px; background:#f00;">🍎 3</div>
+        <div draggable="true" class="puzzle-piece" data-index="0" style="width:80px; height:80px; background:#0f0;">🍎 1</div>
+        <div draggable="true" class="puzzle-piece" data-index="1" style="width:80px; height:80px; background:#00f; color:#fff;">🍎 2</div>
+      </div>
+      <button id="checkPuzzleBtn">Verificar</button>
+      <div id="puzzleResult"></div>
+    `;
+    this.setupDragAndDrop();
+    document.getElementById('checkPuzzleBtn').onclick = () => this.checkPuzzle();
+  }
+
+  setupDragAndDrop() {
+    const pieces = this.container.querySelectorAll('.puzzle-piece');
+    pieces.forEach(piece => {
+      piece.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', piece.dataset.index);
+      });
+    });
+
+    const puzzleArea = this.container.querySelector('#puzzleArea');
+    puzzleArea.addEventListener('dragover', e => e.preventDefault());
+
+    puzzleArea.addEventListener('drop', e => {
+      e.preventDefault();
+      const draggedIndex = e.dataTransfer.getData('text/plain');
+      const target = e.target.closest('.puzzle-piece');
+      if(!target || target.dataset.index === draggedIndex) return;
+
+      // Intercambiar posiciones (simplificado)
+      const pieces = [...puzzleArea.children];
+      const dragged = pieces.find(p => p.dataset.index === draggedIndex);
+      const targetIndex = pieces.indexOf(target);
+      puzzleArea.insertBefore(dragged, pieces[targetIndex]);
+      puzzleArea.insertBefore(target, pieces[targetIndex + 1]);
+      this.sound.correct();
+    });
+  }
+
+  checkPuzzle() {
+    const pieces = [...this.container.querySelectorAll('.puzzle-piece')];
+    const correctOrder = ['0','1','2'];
+    const currentOrder = pieces.map(p => p.dataset.index);
+    const isCorrect = correctOrder.every((v,i) => v === currentOrder[i]);
+    const resultDiv = document.getElementById('puzzleResult');
+
+    if(isCorrect) {
+      resultDiv.textContent = '¡Puzzle completado con éxito!';
+      this.bossBattle.addScore(150);
+      setTimeout(() => this.bossBattle.nextStage(), 1500);
+    } else {
+      resultDiv.textContent = 'El orden no es correcto. Intenta otra vez.';
+      this.sound.incorrect();
+    }
+  }
+}
+
+// STAGE 3: Juego tipo Go Go Space Monkey
+class BossStageGoGo {
+  constructor(bossBattle) {
+    this.bossBattle = bossBattle;
+    this.container = bossBattle.container;
+    this.sound = bossBattle.sound;
+
+    this.playerY = 50;
+    this.playerSpeed = 10;
+    this.obstacles = [];
+    this.powerups = [];
+
+    this.width = this.container.clientWidth;
+    this.height = this.container.clientHeight;
+
+    this.keysPressed = {};
+
+    this.score = 0;
+    this.timeLeft = 30;
+  }
+
+  start() {
+    this.container.innerHTML = `
+      <h3>Etapa 3: Go Go Space Monkey</h3>
+      <div id="goGoGameArea" style="position:relative; width:100%; height:300px; background:#222; overflow:hidden;">
+        <div id="player" style="position:absolute; left:20px; top:${this.playerY}px; width:50px; height:50px; font-size:40px;">🥦</div>
+      </div>
+      <div>Tiempo restante: <span id="goGoTimer">${this.timeLeft}</span></div>
+    `;
+    this.gameArea = this.container.querySelector('#goGoGameArea');
+    this.playerElement = this.container.querySelector('#player');
+
+    this.keysPressed = {};
+    window.addEventListener('keydown', e => {
+      this.keysPressed[e.code] = true;
+    });
+    window.addEventListener('keyup', e => {
+      this.keysPressed[e.code] = false;
+    });
+
+    this.obstacles = [];
+    this.powerups = [];
+    this.score = 0;
+    this.timeLeft = 30;
+
+    this.gameInterval = setInterval(() => this.gameLoop(), 30);
+    this.timerInterval = setInterval(() => this.timerTick(), 1000);
+  }
+
+  timerTick() {
+    this.timeLeft--;
+    this.container.querySelector('#goGoTimer').textContent = this.timeLeft;
+    if(this.timeLeft <= 0) {
+      this.endGame(true);
+    }
+  }
+
+  gameLoop() {
+    this.movePlayer();
+    this.moveObjects();
+    this.spawnObjects();
+    this.checkCollisions();
+  }
+
+  movePlayer() {
+    if(this.keysPressed['ArrowUp'] || this.keysPressed['KeyW']) {
+      this.playerY = Math.max(0, this.playerY - this.playerSpeed);
+    }
+    if(this.keysPressed['ArrowDown'] || this.keysPressed['KeyS']) {
+      this.playerY = Math.min(this.height - 50, this.playerY + this.playerSpeed);
+    }
+    this.playerElement.style.top = this.playerY + 'px';
+  }
+
+  spawnObjects() {
+    if(!this.lastObstacleTime || Date.now() - this.lastObstacleTime > 1500) {
+      this.spawnObstacle();
+      this.lastObstacleTime = Date.now();
+    }
+    if(!this.lastPowerupTime || Date.now() - this.lastPowerupTime > 4000) {
+      this.spawnPowerup();
+      this.lastPowerupTime = Date.now();
+    }
+  }
+
+  spawnObstacle() {
+    const obstacle = document.createElement('div');
+    obstacle.textContent = '🍔';
+    obstacle.style.position = 'absolute';
+    obstacle.style.right = '0px';
+    obstacle.style.top = Math.random() * (this.height - 50) + 'px';
+    obstacle.style.fontSize = '40px';
+    this.gameArea.appendChild(obstacle);
+    this.obstacles.push({element: obstacle, x: 0, y: parseFloat(obstacle.style.top), speed: 5});
+  }
+
+  spawnPowerup() {
+    const powerup = document.createElement('div');
+    powerup.textContent = '🥦';
+    powerup.style.position = 'absolute';
+    powerup.style.right = '0px';
+    powerup.style.top = Math.random() * (this.height - 50) + 'px';
+    powerup.style.fontSize = '40px';
+    this.gameArea.appendChild(powerup);
+    this.powerups.push({element: powerup, x: 0, y: parseFloat(powerup.style.top), speed: 3});
+  }
+
+  moveObjects() {
+    this.obstacles.forEach((obj, i) => {
+      obj.x += obj.speed;
+      obj.element.style.right = obj.x + 'px';
+      if(obj.x > this.width) {
+        this.gameArea.removeChild(obj.element);
+        this.obstacles.splice(i,1);
+      }
+    });
+
+    this.powerups.forEach((obj, i) => {
+      obj.x += obj.speed;
+      obj.element.style.right = obj.x + 'px';
+      if(obj.x > this.width) {
+        this.gameArea.removeChild(obj.element);
+        this.powerups.splice(i,1);
+      }
+    });
+  }
+
+  checkCollisions() {
+    const playerRect = this.playerElement.getBoundingClientRect();
+
+    this.obstacles.forEach((obj, i) => {
+      const objRect = obj.element.getBoundingClientRect();
+      if(this.rectsCollide(playerRect, objRect)) {
+        this.sound.incorrect();
+        this.gameArea.removeChild(obj.element);
+        this.obstacles.splice(i,1);
+        this.endGame(false);
+      }
+    });
+
+    this.powerups.forEach((obj, i) => {
+      const objRect = obj.element.getBoundingClientRect();
+      if(this.rectsCollide(playerRect, objRect)) {
+        this.sound.powerup();
+        this.gameArea.removeChild(obj.element);
+        this.powerups.splice(i,1);
+        this.addScore(50);
+      }
+    });
+  }
+
+  rectsCollide(a, b) {
+    return !(
+      a.right < b.left ||
+      a.left > b.right ||
+      a.bottom < b.top ||
+      a.top > b.bottom
+    );
+  }
+
+  addScore(points) {
+    this.score += points;
+    this.bossBattle.addScore(points);
+  }
+
+  endGame(won) {
+    clearInterval(this.gameInterval);
+    clearInterval(this.timerInterval);
+    window.removeEventListener('keydown', this.keydownHandler);
+    window.removeEventListener('keyup', this.keyupHandler);
+    if(won) {
+      this.bossBattle.finish(true);
+    } else {
+      this.bossBattle.finish(false);
+    }
+  }
+}
+
+
+
+
+</script>
+    
+</body>
+</html>
