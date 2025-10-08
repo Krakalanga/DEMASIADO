@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriVida Games - Minijuegos Nutricionales</title>
+    <title>NutriQuiz - Juego de Nutrición</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap');
         
         * {
             margin: 0;
@@ -15,145 +15,92 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #0a0a0f;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
             color: white;
-            overflow-x: hidden;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Fondo animado */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(45deg, #0a0a0f, #1a1a2e, #16213e);
-            animation: bgShift 10s ease-in-out infinite alternate;
-        }
-
-        @keyframes bgShift {
-            0% { background: linear-gradient(45deg, #0a0a0f, #1a1a2e, #16213e); }
-            100% { background: linear-gradient(45deg, #16213e, #1a1a2e, #0a0a0f); }
-        }
-
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        /* Header */
-        .header {
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid transparent;
-            border-image: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff) 1;
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .logo {
             font-family: 'Orbitron', monospace;
-            font-size: 2.5em;
+            font-size: 3.5em;
             font-weight: 900;
             background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
-            animation: pulse 2s ease-in-out infinite;
+            margin-bottom: 10px;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .subtitle {
+            font-size: 1.2em;
+            color: #ccc;
+            margin-bottom: 20px;
         }
 
-        .user-stats {
+        .stats-container {
             display: flex;
+            justify-content: center;
             gap: 20px;
-            align-items: center;
+            margin-top: 20px;
         }
 
         .stat-box {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,0,110,0.3);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            padding: 10px 20px;
-            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            text-align: center;
+            min-width: 150px;
+            border: 1px solid rgba(255, 0, 110, 0.3);
             box-shadow: 0 0 20px rgba(255, 0, 110, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-bottom: 5px;
         }
 
         .stat-value {
             font-family: 'Orbitron', monospace;
-            font-weight: 700;
+            font-size: 1.8em;
+            font-weight: bold;
             color: #ff006e;
-            font-size: 1.2em;
         }
 
-        /* Container */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .title {
-            text-align: center;
-            font-family: 'Orbitron', monospace;
-            font-size: 3em;
-            font-weight: 900;
-            margin-bottom: 40px;
-            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 50px rgba(131, 56, 236, 0.5);
-        }
-
-        /* Games Grid */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        .game-container {
+            display: flex;
             gap: 30px;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
         }
 
         .game-card {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid transparent;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
             backdrop-filter: blur(20px);
         }
 
@@ -181,50 +128,31 @@
         }
 
         .game-icon {
-            font-size: 4em;
-            text-align: center;
+            font-size: 5em;
             margin-bottom: 20px;
             filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.5));
         }
 
         .game-title {
             font-family: 'Orbitron', monospace;
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: 700;
-            text-align: center;
             margin-bottom: 15px;
             color: #8338ec;
         }
 
         .game-description {
-            text-align: center;
-            margin-bottom: 20px;
-            line-height: 1.6;
             color: #ccc;
-        }
-
-        .game-level {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            line-height: 1.6;
             margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-        }
-
-        .best-score {
-            font-family: 'Orbitron', monospace;
-            color: #ff006e;
         }
 
         .play-btn {
-            width: 100%;
-            padding: 15px;
             background: linear-gradient(45deg, #ff006e, #8338ec);
             border: none;
             border-radius: 15px;
             color: white;
+            padding: 15px 30px;
             font-family: 'Orbitron', monospace;
             font-weight: 700;
             font-size: 1.1em;
@@ -232,6 +160,7 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             box-shadow: 0 0 30px rgba(255, 0, 110, 0.3);
+            width: 100%;
         }
 
         .play-btn:hover {
@@ -239,7 +168,7 @@
             box-shadow: 0 0 50px rgba(255, 0, 110, 0.6);
         }
 
-        /* Modal */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -247,7 +176,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             z-index: 1000;
             justify-content: center;
@@ -277,6 +206,7 @@
             font-size: 2em;
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 10;
         }
 
         .close-btn:hover {
@@ -284,23 +214,76 @@
             text-shadow: 0 0 20px #ff006e;
         }
 
-        .game-area {
-            min-height: 400px;
-            background: rgba(0,0,0,0.3);
+        .modal-title {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff006e, #8338ec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
-            padding: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px rgba(131, 56, 236, 0.5);
+        }
+
+        .game-area {
+            min-height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
             margin: 20px 0;
             position: relative;
         }
 
-        /* Quiz styles */
         .quiz-question {
             background: rgba(131, 56, 236, 0.1);
             border-radius: 15px;
             padding: 30px;
-            margin: 20px 0;
+            margin-bottom: 20px;
             text-align: center;
             border: 1px solid #8338ec;
+            font-size: 1.3em;
+            line-height: 1.5;
         }
 
         .quiz-options {
@@ -311,14 +294,14 @@
         }
 
         .option-btn {
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
             border: 2px solid #3a86ff;
-            border-radius: 10px;
+            border-radius: 15px;
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1em;
+            font-size: 1.1em;
             font-family: inherit;
         }
 
@@ -342,274 +325,6 @@
             box-shadow: 0 0 30px rgba(255, 0, 110, 0.5);
         }
 
-        /* Card styles for Blackjack */
-        .card {
-            width: 80px;
-            height: 110px;
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            position: relative;
-            color: #333;
-            font-weight: bold;
-            font-size: 14px;
-            text-align: center;
-            flex-direction: column;
-            border: 2px solid #ddd;
-        }
-
-        .card.healthy {
-            border-color: #00d4aa;
-            background: linear-gradient(145deg, #e8f5e8, #d4edda);
-        }
-
-        .card.unhealthy {
-            border-color: #ff4757;
-            background: linear-gradient(145deg, #ffe8e8, #f8d7da);
-        }
-
-        .card-icon {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-
-        .card-value {
-            font-size: 16px;
-            font-family: 'Orbitron', monospace;
-            color: #ff006e;
-        }
-
-        /* Puzzle styles */
-        .puzzle-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 2px;
-            max-width: 400px;
-            margin: 20px auto;
-            background: rgba(131, 56, 236, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .puzzle-piece {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(45deg, #3a86ff, #8338ec);
-            border: 2px solid #fff;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: grab;
-            font-size: 24px;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .puzzle-piece:active {
-            cursor: grabbing;
-            transform: scale(0.95);
-        }
-
-        .puzzle-piece.correct {
-            background: linear-gradient(45deg, #00f5ff, #00d4aa);
-            box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
-        }
-
-        .puzzle-scramble {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            justify-content: center;
-            margin: 20px 0;
-            min-height: 80px;
-            padding: 10px;
-            border: 2px dashed #8338ec;
-            border-radius: 10px;
-        }
-
-        /* Memory Game styles */
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            max-width: 400px;
-            margin: 20px auto;
-        }
-
-        .memory-card {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, #8338ec, #3a86ff);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 32px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .memory-card.flipped {
-            background: linear-gradient(45deg, #00f5ff, #00d4aa);
-            transform: rotateY(180deg);
-        }
-
-        .memory-card.matched {
-            background: linear-gradient(45deg, #ff006e, #8338ec);
-            cursor: default;
-            opacity: 0.8;
-        }
-
-        /* Fighter styles */
-        .fighter-arena {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(to bottom, #1a1a2e, #16213e);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 3px solid #8338ec;
-        }
-
-        .fighter {
-            position: absolute;
-            bottom: 50px;
-            width: 80px;
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            transition: all 0.3s ease;
-        }
-
-        .fighter.player {
-            left: 100px;
-        }
-
-        .fighter.enemy {
-            right: 100px;
-        }
-
-        .fighter.attacking {
-            animation: attack 0.5s ease;
-        }
-
-        @keyframes attack {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(30px) scale(1.2); }
-            100% { transform: translateX(0); }
-        }
-
-        .fighter.hit {
-            animation: hit 0.5s ease;
-        }
-
-        @keyframes hit {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-
-        .health-bar {
-            position: absolute;
-            top: 20px;
-            height: 20px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 2px solid #fff;
-        }
-
-        .health-bar.player {
-            left: 20px;
-            width: 200px;
-        }
-
-        .health-bar.enemy {
-            right: 20px;
-            width: 200px;
-        }
-
-        .health-fill {
-            height: 100%;
-            transition: width 0.5s ease;
-            border-radius: 8px;
-        }
-
-        .health-fill.player {
-            background: linear-gradient(90deg, #00f5ff, #00d4aa);
-        }
-
-        .health-fill.enemy {
-            background: linear-gradient(90deg, #ff006e, #ff4757);
-        }
-
-        .fighter-controls {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .fighter-btn {
-            padding: 15px 25px;
-            background: linear-gradient(45deg, #ff006e, #8338ec);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-family: 'Orbitron', monospace;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .fighter-btn:hover:not(:disabled) {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
-        }
-
-        .fighter-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 20px rgba(131, 56, 236, 0.5);
-        }
-
-        .game-timer {
-            text-align: center;
-            font-family: 'Orbitron', monospace;
-            font-size: 2em;
-            color: #ff006e;
-            margin: 20px 0;
-            text-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
-        }
-
         .achievement {
             position: fixed;
             top: 50%;
@@ -629,39 +344,44 @@
             right: 20px;
         }
 
-        /* Responsive */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
         @media (max-width: 768px) {
-            .games-grid {
+            .game-container {
+                flex-direction: column;
+            }
+            
+            .quiz-options {
                 grid-template-columns: 1fr;
             }
             
             .logo {
-                font-size: 2em;
+                font-size: 2.5em;
             }
             
-            .title {
-                font-size: 2em;
-            }
-            
-            .user-stats {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .quiz-options {
-                grid-template-columns: 1fr;
-            }
-
-            .puzzle-grid {
-                grid-template-columns: repeat(4, 1fr);
-                max-width: 300px;
-            }
-
-            .memory-grid {
-                max-width: 300px;
-            }
-
-            .fighter-controls {
+            .stats-container {
                 flex-direction: column;
                 align-items: center;
             }
@@ -669,14 +389,14 @@
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="particles"></div>
-    </div>
+    <div class="particles" id="particles"></div>
 
-    <header class="header">
-        <div class="nav-container">
-            <div class="logo">🎮 NUTRIVIDA</div>
-            <div class="user-stats">
+    <div class="container">
+        <div class="header">
+            <div class="logo">🧠 NUTRIQUIZ</div>
+            <div class="subtitle">Pon a prueba tus conocimientos sobre nutrición y alimentación saludable</div>
+            
+            <div class="stats-container">
                 <div class="stat-box">
                     <div class="stat-label">Nivel</div>
                     <div class="stat-value" id="userLevel">1</div>
@@ -686,59 +406,18 @@
                     <div class="stat-value" id="totalPoints">0</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-label">Logros</div>
-                    <div class="stat-value" id="achievements">0/15</div>
+                    <div class="stat-label">Mejor Puntaje</div>
+                    <div class="stat-value" id="bestScore">0</div>
                 </div>
             </div>
         </div>
-    </header>
 
-    <div class="container">
-        <h1 class="title">🚀 MINIJUEGOS NUTRICIONALES</h1>
-
-        <div class="games-grid">
-            <!-- Game 1: Nutrition Quiz -->
-            <div class="game-card" onclick="openGame('nutritionQuiz')">
+        <div class="game-container">
+            <div class="game-card" onclick="openGame()">
                 <div class="game-icon">🧠</div>
                 <h3 class="game-title">NUTRI QUIZ</h3>
-                <p class="game-description">Responde preguntas sobre nutrición y alimentación saludable. ¡Demuestra tu sabiduría!</p>
-                <div class="game-level">
-                    <span class="best-score">Mejor: <span id="nqScore">0</span></span>
-                </div>
+                <p class="game-description">Responde preguntas sobre nutrición y alimentación saludable. Demuestra tu sabiduría y gana puntos por cada respuesta correcta. ¡Cada pregunta te acerca a convertirte en un experto en nutrición!</p>
                 <button class="play-btn">▶ JUGAR AHORA</button>
-            </div>
-
-            <!-- Game 2: Memory Game -->
-            <div class="game-card" onclick="openGame('memoryGame')">
-                <div class="game-icon">🧩</div>
-                <h3 class="game-title">MEMORIA NUTRITIVA</h3>
-                <p class="game-description">Encuentra las parejas de alimentos saludables. ¡Ejercita tu memoria!</p>
-                <div class="game-level">
-                    <span class="best-score">Mejor: <span id="mgScore">0</span></span>
-                </div>
-                <button class="play-btn">🔍 MEMORIZAR</button>
-            </div>
-
-            <!-- Game 3: Puzzle Game -->
-            <div class="game-card" onclick="openGame('puzzleGame')">
-                <div class="game-icon">🔧</div>
-                <h3 class="game-title">PUZZLE NUTRICIONAL</h3>
-                <p class="game-description">Completa el rompecabezas de la pirámide alimenticia arrastrando las piezas.</p>
-                <div class="game-level">
-                    <span class="best-score">Mejor: <span id="pgScore">0</span></span>
-                </div>
-                <button class="play-btn">🧩 ARMAR</button>
-            </div>
-
-            <!-- Game 4: Boss Battle -->
-            <div class="game-card" onclick="openGame('bossBattle')" style="grid-column: 1 / -1;">
-                <div class="game-icon">⚔️</div>
-                <h3 class="game-title">BOSS BATTLE: BRÓCOLI VS HAMBURGUESA</h3>
-                <p class="game-description">¡Enfréntate al jefe final en 3 etapas: Blackjack Nutricional, Rompecabezas y Batalla Épica!</p>
-                <div class="game-level">
-                    <span class="best-score">Mejor: <span id="bbScore">0</span></span>
-                </div>
-                <button class="play-btn">⚔️ BATALLA ÉPICA</button>
             </div>
         </div>
     </div>
@@ -747,20 +426,29 @@
     <div class="modal" id="gameModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeGame()">&times;</button>
-            <h2 id="modalTitle" style="text-align: center; margin-bottom: 20px; font-family: 'Orbitron', monospace;"></h2>
+            <h2 class="modal-title">🧠 NUTRI QUIZ</h2>
+            
+            <div class="game-info">
+                <div class="info-item">
+                    <div class="info-label">Tiempo</div>
+                    <div class="info-value" id="gameTimer">60</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Pregunta</div>
+                    <div class="info-value" id="questionCount">1/8</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Puntos</div>
+                    <div class="info-value" id="currentScore">0</div>
+                </div>
+            </div>
             
             <div class="progress-container">
                 <div class="progress-bar" id="gameProgress" style="width: 0%"></div>
             </div>
             
-            <div class="game-timer" id="gameTimer">60</div>
-            
             <div class="game-area" id="gameArea">
                 <!-- Game content will be loaded here -->
-            </div>
-            
-            <div style="text-align: center; margin-top: 20px;">
-                <div id="currentScore" style="font-family: 'Orbitron', monospace; font-size: 1.5em; color: #8338ec;">Puntos: 0</div>
             </div>
         </div>
     </div>
@@ -779,34 +467,15 @@
                 this.score = 0;
                 this.timeLeft = 60;
                 this.gameInterval = null;
-                this.totalPoints = this.loadData('totalPoints', 0);
-                this.achievements = this.loadData('achievements', 0);
-                this.userLevel = this.loadData('userLevel', 1);
-            }
-
-            loadData(key, defaultValue) {
-                try {
-                    const value = localStorage.getItem(key);
-                    return value !== null ? parseInt(value) : defaultValue;
-                } catch {
-                    return defaultValue;
-                }
-            }
-
-            saveData() {
-                try {
-                    localStorage.setItem('totalPoints', this.totalPoints);
-                    localStorage.setItem('achievements', this.achievements);
-                    localStorage.setItem('userLevel', this.userLevel);
-                } catch {
-                    console.warn('No se pudo guardar el progreso');
-                }
+                this.totalPoints = 0;
+                this.userLevel = 1;
+                this.bestScore = 0;
             }
 
             updateUI() {
                 document.getElementById('totalPoints').textContent = this.totalPoints;
-                document.getElementById('achievements').textContent = `${this.achievements}/15`;
                 document.getElementById('userLevel').textContent = this.userLevel;
+                document.getElementById('bestScore').textContent = this.bestScore;
             }
         }
 
@@ -851,75 +520,161 @@
 
             correct() { this.playBeep(800, 0.15); }
             incorrect() { this.playBeep(300, 0.3); }
-            victory() {
-                setTimeout(() => this.playBeep(523, 0.1), 0);
-                setTimeout(() => this.playBeep(659, 0.1), 100);
-                setTimeout(() => this.playBeep(784, 0.2), 200);
-            }
-            powerup() {
-                for(let i = 0; i < 5; i++) {
-                    setTimeout(() => this.playBeep(400 + i * 100, 0.05), i * 50);
-                }
-            }
         }
 
         const sound = new SoundManager();
 
         // Game Data
-        const quizQuestions = [
-            {
-                question: "¿Cuál es la cantidad recomendada de agua diaria?",
-                options: ["1-2 litros", "2-3 litros", "3-4 litros", "4-5 litros"],
-                correct: 1,
-                points: 20
-            },
-            {
-                question: "¿Qué nutriente es más importante para el crecimiento muscular?",
-                options: ["Carbohidratos", "Proteínas", "Grasas", "Vitaminas"],
-                correct: 1,
-                points: 20
-            },
-            {
-                question: "¿Cuántas porciones de frutas y verduras se recomiendan al día?",
-                options: ["2-3", "5 o más", "1-2", "10 o más"],
-                correct: 1,
-                points: 20
-            },
-            {
-                question: "¿Cuál de estos alimentos tiene más vitamina C?",
-                options: ["Naranja", "Plátano", "Papa", "Carne"],
-                correct: 0,
-                points: 15
-            },
-            {
-                question: "¿Qué tipo de grasa es más saludable?",
-                options: ["Saturadas", "Trans", "Monoinsaturadas", "Ninguna"],
-                correct: 2,
-                points: 25
-            },
-            {
-                question: "¿Cuántas comidas principales se recomiendan al día?",
-                options: ["1-2", "3", "5-6", "No importa"],
-                correct: 1,
-                points: 15
-            },
-            {
-                question: "¿Qué mineral es esencial para los huesos?",
-                options: ["Hierro", "Calcio", "Potasio", "Zinc"],
-                correct: 1,
-                points: 20
-            },
-            {
-                question: "¿Cuál es el principal combustible del cerebro?",
-                options: ["Glucosa", "Grasas", "Proteínas", "Vitaminas"],
-                correct: 0,
-                points: 20
-            }
-        ];
+      const quizQuestions = [
+    { 
+        question: "¿Cuál es la cantidad recomendada de agua diaria para un adulto promedio?", 
+        options: ["1-2 litros", "2-3 litros", "3-4 litros", "4-5 litros"], 
+        correct: 1, 
+        points: 20,
+        explanation: "Se recomienda beber entre 2-3 litros de agua al día para mantener una hidratación adecuada."
+    },
+    { 
+        question: "¿Qué nutriente es más importante para el crecimiento y reparación muscular?", 
+        options: ["Carbohidratos", "Proteínas", "Grasas", "Vitaminas"], 
+        correct: 1, 
+        points: 20,
+        explanation: "Las proteínas son esenciales para construir y reparar tejidos musculares."
+    },
+    { 
+        question: "¿Cuántas porciones de frutas y verduras se recomiendan consumir al día?", 
+        options: ["2-3 porciones", "5 o más porciones", "1-2 porciones", "10 o más porciones"], 
+        correct: 1, 
+        points: 20,
+        explanation: "La OMS recomienda consumir al menos 5 porciones de frutas y verduras al día."
+    },
+    { 
+        question: "¿Cuál de estos alimentos tiene mayor contenido de vitamina C?", 
+        options: ["Naranja", "Plátano", "Papa", "Carne de res"], 
+        correct: 0, 
+        points: 15,
+        explanation: "Las naranjas son ricas en vitamina C, esencial para el sistema inmunológico."
+    },
+    { 
+        question: "¿Qué tipo de grasa es considerada más saludable para el corazón?", 
+        options: ["Grasas saturadas", "Grasas trans", "Grasas monoinsaturadas", "Todas las grasas son iguales"], 
+        correct: 2, 
+        points: 25, 
+        explanation: "Las grasas monoinsaturadas, como las del aceite de oliva, son beneficiosas para la salud cardiovascular."
+    },
+    { 
+        question: "¿Cuántas comidas principales se recomiendan al día para una alimentación balanceada?", 
+        options: ["1-2 comidas", "3 comidas", "5-6 comidas pequeñas", "No importa el número"], 
+        correct: 1, 
+        points: 15,
+        explanation: "Tres comidas principales (desayuno, almuerzo y cena) ayudan a mantener un metabolismo estable."
+    },
+    { 
+        question: "¿Qué mineral es esencial para la formación y mantenimiento de huesos fuertes?", 
+        options: ["Hierro", "Calcio", "Potasio", "Zinc"], 
+        correct: 1, 
+        points: 20,
+        explanation: "El calcio es fundamental para la salud ósea y previene enfermedades como la osteoporosis."
+    },
+    { 
+        question: "¿Cuál es la principal fuente de energía para el cerebro?", 
+        options: ["Glucosa", "Grasas", "Proteínas", "Vitaminas"], 
+        correct: 0, 
+        points: 20,
+        explanation: "El cerebro utiliza principalmente glucosa como fuente de energía."
+    },
+    { 
+        question: "¿Qué vitamina es esencial para la coagulación sanguínea?", 
+        options: ["Vitamina A", "Vitamina K", "Vitamina D", "Vitamina C"], 
+        correct: 1, 
+        points: 15,
+        explanation: "La vitamina K es clave para la coagulación de la sangre y la salud ósea."
+    },
+    { 
+        question: "¿Cuál es la principal función de los carbohidratos en la dieta?", 
+        options: ["Construir músculo", "Proveer energía", "Fortalecer huesos", "Regular hormonas"], 
+        correct: 1, 
+        points: 20,
+        explanation: "Los carbohidratos son la principal fuente de energía para el cuerpo y el cerebro."
+    },
+    { 
+        question: "¿Cuál de los siguientes alimentos es una buena fuente de hierro?", 
+        options: ["Espinaca", "Leche", "Manzana", "Aceite de oliva"], 
+        correct: 0, 
+        points: 20,
+        explanation: "La espinaca es rica en hierro, fundamental para prevenir anemia y transportar oxígeno."
+    },
+    { 
+        question: "¿Qué efecto tiene el exceso de azúcares en la salud?", 
+        options: ["Fortalece dientes", "Aumenta energía duradera", "Contribuye a obesidad y diabetes", "Mejora visión"], 
+        correct: 2, 
+        points: 25,
+        explanation: "El consumo excesivo de azúcares puede causar obesidad, diabetes y problemas cardiovasculares."
+    },
+    { 
+        question: "¿Qué tipo de grasa es perjudicial y debe evitarse?", 
+        options: ["Grasas saturadas", "Grasas trans", "Grasas poliinsaturadas", "Grasas monoinsaturadas"], 
+        correct: 1, 
+        points: 20,
+        explanation: "Las grasas trans aumentan el colesterol malo y el riesgo de enfermedades cardíacas."
+    },
+    { 
+        question: "¿Cuál de estos alimentos es rico en fibra?", 
+        options: ["Pan integral", "Queso", "Carne de res", "Helado"], 
+        correct: 0, 
+        points: 15,
+        explanation: "El pan integral aporta fibra, que mejora la digestión y regula el tránsito intestinal."
+    },
+    { 
+        question: "¿Qué mineral ayuda a regular la presión arterial?", 
+        options: ["Sodio", "Calcio", "Potasio", "Hierro"], 
+        correct: 2, 
+        points: 20,
+        explanation: "El potasio ayuda a equilibrar los efectos del sodio y mantener una presión arterial saludable."
+    },
+    { 
+        question: "¿Cuál es el beneficio principal de consumir pescado rico en omega-3?", 
+        options: ["Fortalece huesos", "Mejora visión nocturna", "Protege el corazón", "Aumenta glucosa"], 
+        correct: 2, 
+        points: 25,
+        explanation: "El omega-3 ayuda a reducir el riesgo de enfermedades cardiovasculares y mejora la salud cerebral."
+    },
+    { 
+        question: "¿Qué efecto tiene una dieta rica en frutas y verduras?", 
+        options: ["Aumenta riesgo de obesidad", "Mejora digestión y previene enfermedades", "Debilita el sistema inmunológico", "No tiene efecto"], 
+        correct: 1, 
+        points: 20,
+        explanation: "Consumir frutas y verduras aporta vitaminas, minerales y fibra, protegiendo la salud general."
+    },
+    { 
+        question: "¿Qué vitamina se obtiene principalmente a través de la exposición al sol?", 
+        options: ["Vitamina A", "Vitamina C", "Vitamina D", "Vitamina E"], 
+        correct: 2, 
+        points: 20,
+        explanation: "La vitamina D se produce en la piel mediante la exposición a la luz solar y es esencial para los huesos."
+    },
+    { 
+        question: "¿Qué componente de la dieta ayuda a la función cerebral y salud nerviosa?", 
+        options: ["Grasas saludables", "Azúcares", "Sodio", "Colorantes"], 
+        correct: 0, 
+        points: 20,
+        explanation: "Las grasas saludables, como el omega-3, son esenciales para la función cerebral y nerviosa."
+    },
+    { 
+        question: "¿Cuál es la recomendación sobre el consumo de sal?", 
+        options: ["Consumir en exceso", "Evitar completamente", "Consumir moderadamente", "No importa la cantidad"], 
+        correct: 2, 
+        points: 20,
+        explanation: "El consumo moderado de sal es importante para la presión arterial y la salud cardiovascular."
+    },
+    { 
+        question: "¿Qué beneficio tiene el consumo de yogur y otros probióticos?", 
+        options: ["Aumenta colesterol", "Mejora digestión y flora intestinal", "Disminuye calcio", "Provoca anemia"], 
+        correct: 1, 
+        points: 20,
+        explanation: "Los probióticos ayudan a mantener un intestino saludable y fortalecer el sistema inmunológico."
+    }
+];
 
-        const memoryCards = [
-            '🍎', '🥦', '🥕', '🍊', '🍌', '🥬', '🫐', '🍇'
-        ];
 
         function shuffleArray(array) {
             const arr = [...array];
@@ -942,12 +697,11 @@
 
         // Nutrition Quiz Class
         class NutriQuiz {
-            constructor(container, progressBar, timerDisplay, soundManager, onFinish) {
+            constructor(container, progressBar, timerDisplay, soundManager) {
                 this.container = container;
                 this.progressBar = progressBar;
                 this.timerDisplay = timerDisplay;
                 this.sound = soundManager;
-                this.onFinish = onFinish;
 
                 this.questionsPool = shuffleArray(quizQuestions);
                 this.remainingQuestions = [...this.questionsPool];
@@ -957,6 +711,7 @@
                 this.timeLeft = 60;
                 this.timerId = null;
                 this.answeredCount = 0;
+                this.totalQuestions = quizQuestions.length;
             }
 
             start() {
@@ -965,6 +720,7 @@
                 this.answeredCount = 0;
                 this.remainingQuestions = [...this.questionsPool];
                 this.updateProgress();
+                this.updateQuestionCount();
                 this.nextQuestion();
                 this.startTimer();
                 this.updateScore();
@@ -983,8 +739,12 @@
             }
 
             updateProgress() {
-                const percent = (this.answeredCount / this.questionsPool.length) * 100;
+                const percent = (this.answeredCount / this.totalQuestions) * 100;
                 this.progressBar.style.width = percent + '%';
+            }
+
+            updateQuestionCount() {
+                document.getElementById('questionCount').textContent = `${this.answeredCount + 1}/${this.totalQuestions}`;
             }
 
             nextQuestion() {
@@ -997,6 +757,7 @@
                 this.currentQuestion = this.remainingQuestions.splice(idx, 1)[0];
                 this.renderQuestion();
                 this.updateProgress();
+                this.updateQuestionCount();
             }
 
             renderQuestion() {
@@ -1032,12 +793,12 @@
                     btn.classList.add('correct');
                     this.sound.correct();
                     this.score += this.currentQuestion.points;
-                    showAchievement(`¡Correcto! +${this.currentQuestion.points} puntos`);
+                    showAchievement(`¡Correcto! +${this.currentQuestion.points} puntos\n${this.currentQuestion.explanation}`);
                 } else {
                     btn.classList.add('incorrect');
                     correctBtn.classList.add('correct');
                     this.sound.incorrect();
-                    showAchievement('Incorrecto. ¡Sigue intentando!');
+                    showAchievement(`Incorrecto. La respuesta correcta es: ${this.currentQuestion.options[correctIndex]}\n${this.currentQuestion.explanation}`);
                 }
 
                 this.answeredCount++;
@@ -1045,1054 +806,109 @@
                 this.updateScore();
 
                 setTimeout(() => {
-                    if(this.timeLeft <= 0){
+                    if(this.timeLeft <= 0 || this.answeredCount >= this.totalQuestions){
                         this.end();
                     } else {
                         this.nextQuestion();
                     }
-                }, 1200);
+                }, 2000);
             }
 
             updateScore() {
-                document.getElementById('currentScore').textContent = 'Puntos: ' + this.score;
+                document.getElementById('currentScore').textContent = this.score;
             }
 
             end() {
                 clearInterval(this.timerId);
-                this.onFinish(this.score);
-            }
-        }
-
-        // Memory Game Class
-        class MemoryGame {
-            constructor(container, progressBar, timerDisplay, soundManager, onFinish) {
-                this.container = container;
-                this.progressBar = progressBar;
-                this.timerDisplay = timerDisplay;
-                this.sound = soundManager;
-                this.onFinish = onFinish;
-
-                this.cards = [...memoryCards, ...memoryCards];
-                this.shuffledCards = shuffleArray(this.cards);
-                this.flippedCards = [];
-                this.matchedPairs = 0;
-                this.score = 0;
-                this.timeLeft = 90;
-                this.timerId = null;
-            }
-
-            start() {
-                this.score = 0;
-                this.matchedPairs = 0;
-                this.flippedCards = [];
-                this.shuffledCards = shuffleArray([...memoryCards, ...memoryCards]);
-                this.timeLeft = 90;
-                this.render();
-                this.startTimer();
-                this.updateScore();
-            }
-
-            startTimer() {
-                this.timerDisplay.textContent = this.timeLeft;
-                clearInterval(this.timerId);
-                this.timerId = setInterval(() => {
-                    this.timeLeft--;
-                    this.timerDisplay.textContent = this.timeLeft;
-                    if(this.timeLeft <= 0){
-                        this.end();
-                    }
-                }, 1000);
-            }
-
-            render() {
+                
+                // Mostrar resultados finales
                 this.container.innerHTML = `
-                    <h3 style="color: #ff006e; text-align: center; margin-bottom: 20px;">🧩 Encuentra las parejas</h3>
-                    <div class="memory-grid" id="memoryGrid"></div>
+                    <div class="quiz-question">
+                        <h2>¡Quiz Completado!</h2>
+                        <p>Obtuviste ${this.score} puntos de ${this.totalQuestions * 20} posibles</p>
+                        <p>${this.score >= (this.totalQuestions * 20) * 0.8 ? '¡Excelente! Eres un experto en nutrición' : 
+                           this.score >= (this.totalQuestions * 20) * 0.6 ? '¡Buen trabajo! Tienes buenos conocimientos' : 
+                           'Sigue aprendiendo sobre nutrición'}</p>
+                    </div>
                 `;
-
-                const grid = document.getElementById('memoryGrid');
-                this.shuffledCards.forEach((card, index) => {
-                    const cardElement = document.createElement('div');
-                    cardElement.className = 'memory-card';
-                    cardElement.dataset.index = index;
-                    cardElement.dataset.card = card;
-                    cardElement.textContent = '?';
-                    cardElement.onclick = () => this.flipCard(cardElement, index);
-                    grid.appendChild(cardElement);
-                });
-
-                this.updateProgress();
-            }
-
-            flipCard(cardElement, index) {
-                if (this.flippedCards.length >= 2 || cardElement.classList.contains('flipped') || cardElement.classList.contains('matched')) {
-                    return;
-                }
-
-                cardElement.classList.add('flipped');
-                cardElement.textContent = this.shuffledCards[index];
-                this.flippedCards.push({element: cardElement, index, value: this.shuffledCards[index]});
-
-                if (this.flippedCards.length === 2) {
-                    setTimeout(() => this.checkMatch(), 800);
-                }
-            }
-
-            checkMatch() {
-                const [first, second] = this.flippedCards;
                 
-                if (first.value === second.value) {
-                    first.element.classList.add('matched');
-                    second.element.classList.add('matched');
-                    this.matchedPairs++;
-                    this.score += 50;
-                    this.sound.correct();
-                    showAchievement('¡Pareja encontrada! +50 puntos');
-                    
-                    if (this.matchedPairs === memoryCards.length) {
-                        this.score += this.timeLeft * 2;
-                        showAchievement(`¡Completado! Bonus: +${this.timeLeft * 2} puntos`);
-                        setTimeout(() => this.end(), 1000);
-                    }
-                } else {
-                    first.element.classList.remove('flipped');
-                    second.element.classList.remove('flipped');
-                    first.element.textContent = '?';
-                    second.element.textContent = '?';
-                    this.sound.incorrect();
+                showAchievement(`¡Juego terminado! Obtuviste ${this.score} puntos`);
+                state.totalPoints += this.score;
+                state.bestScore = Math.max(state.bestScore, this.score);
+                
+                // Subir de nivel cada 100 puntos
+                if (state.totalPoints >= state.userLevel * 100) {
+                    state.userLevel++;
+                    showAchievement(`¡Felicidades! Has subido al nivel ${state.userLevel}`);
                 }
-
-                this.flippedCards = [];
-                this.updateProgress();
-                this.updateScore();
-            }
-
-            updateProgress() {
-                const percent = (this.matchedPairs / memoryCards.length) * 100;
-                this.progressBar.style.width = percent + '%';
-            }
-
-            updateScore() {
-                document.getElementById('currentScore').textContent = 'Puntos: ' + this.score;
-            }
-
-            end() {
-                clearInterval(this.timerId);
-                this.onFinish(this.score);
+                
+                state.updateUI();
             }
         }
 
-        // Puzzle Game Class
-        class PuzzleGame {
-            constructor(container, progressBar, timerDisplay, soundManager, onFinish) {
-                this.container = container;
-                this.progressBar = progressBar;
-                this.timerDisplay = timerDisplay;
-                this.sound = soundManager;
-                this.onFinish = onFinish;
-
-                this.pieces = [
-                    '🍎', '🍌', '🥕', '🥦', '🍊',
-                    '🍇', '🫐', '🥬', '🍓', '🥒',
-                    '🥭', '🍑', '🥝', '🍅', '🌶️',
-                    '🥑', '🍆', '🥔', '🌽', '🧄'
-                ];
-                this.correctOrder = [...this.pieces];
-                this.scrambledPieces = [];
-                this.score = 0;
-                this.timeLeft = 120;
-                this.timerId = null;
-                this.placedPieces = 0;
-            }
-
-            start() {
-                this.score = 0;
-                this.placedPieces = 0;
-                this.scrambledPieces = shuffleArray([...this.pieces]);
-                this.timeLeft = 120;
-                this.render();
-                this.startTimer();
-                this.updateScore();
-            }
-
-            startTimer() {
-                this.timerDisplay.textContent = this.timeLeft;
-                clearInterval(this.timerId);
-                this.timerId = setInterval(() => {
-                    this.timeLeft--;
-                    this.timerDisplay.textContent = this.timeLeft;
-                    if(this.timeLeft <= 0){
-                        this.end();
-                    }
-                }, 1000);
-            }
-
-            render() {
-                this.container.innerHTML = `
-                    <h3 style="color: #ff006e; text-align: center; margin-bottom: 20px;">🧩 Completa la Pirámide Alimenticia</h3>
-                    <p style="text-align: center; color: #ccc; margin-bottom: 20px;">Arrastra las piezas a su posición correcta</p>
-                    <div class="puzzle-grid" id="puzzleGrid"></div>
-                    <div class="puzzle-scramble" id="puzzleScramble"></div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button id="checkPuzzleBtn" class="option-btn" style="padding: 15px 30px;">🔍 Verificar</button>
-                    </div>
-                `;
-
-                this.renderGrid();
-                this.renderScrambledPieces();
-                this.setupDragAndDrop();
-
-                document.getElementById('checkPuzzleBtn').onclick = () => this.checkCompletion();
-                this.updateProgress();
-            }
-
-            renderGrid() {
-                const grid = document.getElementById('puzzleGrid');
-                this.pieces.forEach((piece, index) => {
-                    const slot = document.createElement('div');
-                    slot.className = 'puzzle-piece';
-                    slot.dataset.correctIndex = index;
-                    slot.style.background = 'rgba(131, 56, 236, 0.2)';
-                    slot.style.border = '2px dashed #8338ec';
-                    slot.style.color = '#666';
-                    slot.textContent = '?';
-                    grid.appendChild(slot);
-                });
-            }
-
-            renderScrambledPieces() {
-                const scrambleArea = document.getElementById('puzzleScramble');
-                this.scrambledPieces.forEach((piece, index) => {
-                    const pieceElement = document.createElement('div');
-                    pieceElement.className = 'puzzle-piece';
-                    pieceElement.draggable = true;
-                    pieceElement.dataset.piece = piece;
-                    pieceElement.textContent = piece;
-                    scrambleArea.appendChild(pieceElement);
-                });
-            }
-
-            setupDragAndDrop() {
-                let draggedElement = null;
-
-                // Setup draggable pieces
-                const pieces = this.container.querySelectorAll('.puzzle-scramble .puzzle-piece');
-                pieces.forEach(piece => {
-                    piece.addEventListener('dragstart', e => {
-                        draggedElement = piece;
-                        e.dataTransfer.effectAllowed = 'move';
-                    });
-                });
-
-                // Setup drop zones
-                const slots = this.container.querySelectorAll('.puzzle-grid .puzzle-piece');
-                slots.forEach(slot => {
-                    slot.addEventListener('dragover', e => {
-                        e.preventDefault();
-                        e.dataTransfer.dropEffect = 'move';
-                    });
-
-                    slot.addEventListener('drop', e => {
-                        e.preventDefault();
-                        if (draggedElement && slot.textContent === '?') {
-                            slot.textContent = draggedElement.dataset.piece;
-                            slot.dataset.piece = draggedElement.dataset.piece;
-                            slot.style.background = 'linear-gradient(45deg, #3a86ff, #8338ec)';
-                            slot.style.border = '2px solid #fff';
-                            slot.style.color = '#fff';
-                            
-                            draggedElement.remove();
-                            this.placedPieces++;
-                            this.sound.correct();
-                            this.updateProgress();
-                        }
-                    });
-
-                    // Double click to remove piece
-                    slot.addEventListener('dblclick', () => {
-                        if (slot.dataset.piece && slot.textContent !== '?') {
-                            const scrambleArea = document.getElementById('puzzleScramble');
-                            const piece = document.createElement('div');
-                            piece.className = 'puzzle-piece';
-                            piece.draggable = true;
-                            piece.dataset.piece = slot.dataset.piece;
-                            piece.textContent = slot.dataset.piece;
-                            scrambleArea.appendChild(piece);
-
-                            // Re-setup drag for new piece
-                            piece.addEventListener('dragstart', e => {
-                                draggedElement = piece;
-                                e.dataTransfer.effectAllowed = 'move';
-                            });
-
-                            slot.textContent = '?';
-                            slot.dataset.piece = '';
-                            slot.style.background = 'rgba(131, 56, 236, 0.2)';
-                            slot.style.border = '2px dashed #8338ec';
-                            slot.style.color = '#666';
-                            this.placedPieces--;
-                            this.updateProgress();
-                        }
-                    });
-                });
-            }
-
-            checkCompletion() {
-                const slots = this.container.querySelectorAll('.puzzle-grid .puzzle-piece');
-                let correctPieces = 0;
-
-                slots.forEach((slot, index) => {
-                    const correctPiece = this.correctOrder[index];
-                    if (slot.dataset.piece === correctPiece) {
-                        slot.classList.add('correct');
-                        correctPieces++;
-                    }
-                });
-
-                const accuracy = (correctPieces / this.pieces.length) * 100;
-                this.score = Math.floor(accuracy * 10) + (this.timeLeft * 2);
-
-                if (correctPieces === this.pieces.length) {
-                    this.sound.victory();
-                    showAchievement(`¡Puzzle completado! Puntos: ${this.score}`);
-                    setTimeout(() => this.end(), 2000);
-                } else {
-                    showAchievement(`${correctPieces}/${this.pieces.length} correctas. Puntos parciales: ${this.score}`);
-                    this.sound.powerup();
-                }
-
-                this.updateScore();
-            }
-
-            updateProgress() {
-                const percent = (this.placedPieces / this.pieces.length) * 100;
-                this.progressBar.style.width = percent + '%';
-            }
-
-            updateScore() {
-                document.getElementById('currentScore').textContent = 'Puntos: ' + this.score;
-            }
-
-            end() {
-                clearInterval(this.timerId);
-                this.onFinish(this.score);
-            }
-        }
-
-        // Boss Battle System
-        class BossBattle {
-            constructor(container, progressBar, timerDisplay, soundManager, onFinish) {
-                this.container = container;
-                this.progressBar = progressBar;
-                this.timerDisplay = timerDisplay;
-                this.sound = soundManager;
-                this.onFinish = onFinish;
-
-                this.stage = 1;
-                this.score = 0;
-
-                this.stages = {
-                    1: new BossStageBlackjack(this),
-                    2: new BossStagePuzzle(this),
-                    3: new BossStageFight(this)
-                };
-            }
-
-            start() {
-                this.score = 0;
-                this.stage = 1;
-                this.container.innerHTML = '';
-                this.timerDisplay.textContent = '';
-                this.progressBar.style.width = '0%';
-
-                this.stages[this.stage].start();
-                this.updateProgressBar();
-            }
-
-            nextStage() {
-                this.stage++;
-                if(this.stage > 3) {
-                    this.finish(true);
-                    return;
-                }
-                this.container.innerHTML = '';
-                this.stages[this.stage].start();
-                this.updateProgressBar();
-            }
-
-            updateProgressBar() {
-                const percent = ((this.stage - 1) / 3) * 100;
-                this.progressBar.style.width = percent + '%';
-            }
-
-            addScore(points) {
-                this.score += points;
-                document.getElementById('currentScore').textContent = `Puntos: ${this.score}`;
-            }
-
-            finish(win) {
-                this.progressBar.style.width = '100%';
-                if(win) {
-                    this.sound.victory();
-                    showAchievement(`¡Ganaste la Boss Battle! Puntos totales: ${this.score}`);
-                    
-                    const currentBest = state.loadData('bbScore', 0);
-                    if(this.score > currentBest) {
-                        localStorage.setItem('bbScore', this.score);
-                        document.getElementById('bbScore').textContent = this.score;
-                        showAchievement('¡Nuevo récord personal!');
-                    }
-                    
-                    state.totalPoints += this.score;
-                    state.saveData();
-                    state.updateUI();
-                    
-                    this.onFinish(this.score);
-                } else {
-                    this.sound.incorrect();
-                    showAchievement('Perdiste la Boss Battle. ¡Intenta de nuevo!');
-                    this.onFinish(this.score);
-                }
-            }
-        }
-
-        // STAGE 1: Enhanced Blackjack with Visual Cards
-        class BossStageBlackjack {
-            constructor(bossBattle) {
-                this.bossBattle = bossBattle;
-                this.container = bossBattle.container;
-                this.sound = bossBattle.sound;
-
-                this.playerSum = 0;
-                this.bossSum = 0;
-                this.playerCards = [];
-                this.bossCards = [];
-
-                this.cards = [
-                    {name: '🍎 Manzana', value: 5, type: 'healthy'},
-                    {name: '🍌 Banana', value: 7, type: 'healthy'},
-                    {name: '🍔 Hamburguesa', value: 10, type: 'unhealthy'},
-                    {name: '🥦 Brócoli', value: 4, type: 'healthy'},
-                    {name: '🍕 Pizza', value: 9, type: 'unhealthy'},
-                    {name: '🥕 Zanahoria', value: 3, type: 'healthy'},
-                    {name: '🥤 Refresco', value: 11, type: 'unhealthy'},
-                    {name: '🍊 Naranja', value: 6, type: 'healthy'},
-                    {name: '🍟 Papas', value: 8, type: 'unhealthy'},
-                    {name: '🥬 Lechuga', value: 2, type: 'healthy'}
-                ];
-            }
-
-            start() {
-                this.container.innerHTML = `
-                    <h3 style="color: #ff006e; text-align: center; margin-bottom: 20px;">🎰 Etapa 1: Blackjack Nutricional</h3>
-                    <p style="text-align: center; margin-bottom: 20px; color: #ccc;">Acércate a 21 sin pasarte. Los alimentos saludables tienen menos puntos.</p>
-                    
-                    <div style="display: flex; justify-content: space-between; margin: 30px 0;">
-                        <div style="flex: 1; text-align: center;">
-                            <h4 style="color: #3a86ff; margin-bottom: 10px;">🥦 Tu Mano (${this.playerSum})</h4>
-                            <div id="playerCards" style="min-height: 120px; display: flex; gap: 5px; justify-content: center; flex-wrap: wrap;"></div>
-                        </div>
-                        <div style="flex: 1; text-align: center;">
-                            <h4 style="color: #ff006e; margin-bottom: 10px;">🍔 Boss Mano (?)</h4>
-                            <div id="bossCards" style="min-height: 120px; display: flex; gap: 5px; justify-content: center; flex-wrap: wrap;"></div>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 20px; justify-content: center; margin: 20px 0;">
-                        <button id="hitBtn" class="option-btn" style="padding: 15px 25px;">🃏 Pedir Carta</button>
-                        <button id="standBtn" class="option-btn" style="padding: 15px 25px;">✋ Plantarse</button>
-                    </div>
-                    <div id="blackjackResult" style="text-align: center; margin-top: 20px; font-size: 1.3em; font-weight: bold;"></div>
-                `;
-
-                this.playerSum = 0;
-                this.playerCards = [];
-                this.bossCards = [];
-                
-                // Boss starts with one card
-                this.drawBossCard();
-
-                document.getElementById('hitBtn').onclick = () => this.hit();
-                document.getElementById('standBtn').onclick = () => this.stand();
-                
-                this.updateDisplay();
-            }
-
-            drawPlayerCard() {
-                const card = this.cards[Math.floor(Math.random() * this.cards.length)];
-                this.playerCards.push(card);
-                this.playerSum += card.value;
-                this.createCardElement(card, 'playerCards');
-                return card;
-            }
-
-            drawBossCard() {
-                const card = this.cards[Math.floor(Math.random() * this.cards.length)];
-                this.bossCards.push(card);
-                this.bossSum += card.value;
-                return card;
-            }
-
-            createCardElement(card, containerId) {
-                const container = document.getElementById(containerId);
-                const cardEl = document.createElement('div');
-                cardEl.className = `card ${card.type}`;
-                cardEl.innerHTML = `
-                    <div class="card-icon">${card.name.split(' ')[0]}</div>
-                    <div class="card-value">${card.value}</div>
-                `;
-                cardEl.title = card.name;
-                container.appendChild(cardEl);
-
-                // Add entrance animation
-                cardEl.style.opacity = '0';
-                cardEl.style.transform = 'scale(0.5) rotate(180deg)';
-                setTimeout(() => {
-                    cardEl.style.transition = 'all 0.5s ease';
-                    cardEl.style.opacity = '1';
-                    cardEl.style.transform = 'scale(1) rotate(0deg)';
-                }, 100);
-            }
-
-            hit() {
-                const card = this.drawPlayerCard();
-                this.sound.correct();
-                showAchievement(`Sacaste: ${card.name} (${card.value} puntos)`);
-                
-                this.updateDisplay();
-                if(this.playerSum > 21) {
-                    this.endGame(false);
-                }
-            }
-
-            stand() {
-                // Reveal boss cards
-                const bossCardsContainer = document.getElementById('bossCards');
-                bossCardsContainer.innerHTML = '';
-                this.bossCards.forEach(card => this.createCardElement(card, 'bossCards'));
-                
-                // Boss draws until 17
-                while(this.bossSum < 17) {
-                    const card = this.drawBossCard();
-                    this.createCardElement(card, 'bossCards');
-                }
-                
-                const playerWon = this.playerSum <= 21 && (this.bossSum > 21 || this.playerSum >= this.bossSum);
-                this.endGame(playerWon);
-            }
-
-            updateDisplay() {
-                // Update sum displays
-                this.container.querySelector('h4').textContent = `🥦 Tu Mano (${this.playerSum})`;
-            }
-
-            endGame(playerWon) {
-                // Show final boss sum
-                this.container.querySelectorAll('h4')[1].textContent = `🍔 Boss Mano (${this.bossSum})`;
-                
-                const resultDiv = document.getElementById('blackjackResult');
-                document.getElementById('hitBtn').disabled = true;
-                document.getElementById('standBtn').disabled = true;
-
-                if(playerWon) {
-                    resultDiv.innerHTML = '<span style="color: #00f5ff;">🎉 ¡Ganaste esta etapa!</span>';
-                    this.bossBattle.addScore(100);
-                    setTimeout(() => this.bossBattle.nextStage(), 3000);
-                } else {
-                    resultDiv.innerHTML = '<span style="color: #ff006e;">💥 Perdiste esta etapa...</span>';
-                    setTimeout(() => this.bossBattle.finish(false), 3000);
-                }
-            }
-        }
-
-        // STAGE 2: Enhanced Puzzle with More Pieces
-        class BossStagePuzzle {
-            constructor(bossBattle) {
-                this.bossBattle = bossBattle;
-                this.container = bossBattle.container;
-                this.sound = bossBattle.sound;
-                this.pieces = ['🍎','🍌','🥕','🥦','🍊','🍇','🫐','🥬','🍓','🥒'];
-                this.correctOrder = [...this.pieces];
-                this.placedCount = 0;
-            }
-
-            start() {
-                this.container.innerHTML = `
-                    <h3 style="color: #ff006e; text-align: center; margin-bottom: 20px;">🧩 Etapa 2: Rompecabezas Completo</h3>
-                    <p style="text-align: center; margin-bottom: 20px; color: #ccc;">Ordena todos los alimentos arrastrándolos a su posición correcta</p>
-                    <div class="puzzle-grid" id="bossPuzzleGrid" style="grid-template-columns: repeat(5, 1fr); max-width: 500px;"></div>
-                    <div class="puzzle-scramble" id="bossPuzzleScramble"></div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button id="checkBossPuzzleBtn" class="option-btn" style="padding: 15px 30px;">🔍 Verificar Orden</button>
-                    </div>
-                    <div id="bossPuzzleResult" style="text-align: center; margin-top: 20px; font-size: 1.3em; font-weight: bold;"></div>
-                `;
-
-                this.renderPuzzle();
-                this.setupDragAndDrop();
-                document.getElementById('checkBossPuzzleBtn').onclick = () => this.checkPuzzle();
-                this.placedCount = 0;
-            }
-
-            renderPuzzle() {
-                const grid = document.getElementById('bossPuzzleGrid');
-                const scrambleArea = document.getElementById('bossPuzzleScramble');
-                
-                // Create grid slots
-                this.pieces.forEach((piece, index) => {
-                    const slot = document.createElement('div');
-                    slot.className = 'puzzle-piece';
-                    slot.dataset.correctIndex = index;
-                    slot.style.background = 'rgba(131, 56, 236, 0.2)';
-                    slot.style.border = '2px dashed #8338ec';
-                    slot.textContent = '?';
-                    grid.appendChild(slot);
-                });
-
-                // Create scrambled pieces
-                const scrambled = shuffleArray([...this.pieces]);
-                scrambled.forEach((piece) => {
-                    const pieceEl = document.createElement('div');
-                    pieceEl.className = 'puzzle-piece';
-                    pieceEl.draggable = true;
-                    pieceEl.dataset.piece = piece;
-                    pieceEl.textContent = piece;
-                    scrambleArea.appendChild(pieceEl);
-                });
-            }
-
-            setupDragAndDrop() {
-                let draggedElement = null;
-
-                // Setup draggable pieces
-                const pieces = this.container.querySelectorAll('.puzzle-scramble .puzzle-piece');
-                pieces.forEach(piece => {
-                    piece.addEventListener('dragstart', e => {
-                        draggedElement = piece;
-                        e.dataTransfer.effectAllowed = 'move';
-                    });
-                });
-
-                // Setup drop zones
-                const slots = this.container.querySelectorAll('.puzzle-grid .puzzle-piece');
-                slots.forEach(slot => {
-                    slot.addEventListener('dragover', e => {
-                        e.preventDefault();
-                        e.dataTransfer.dropEffect = 'move';
-                    });
-
-                    slot.addEventListener('drop', e => {
-                        e.preventDefault();
-                        if (draggedElement && slot.textContent === '?') {
-                            slot.textContent = draggedElement.dataset.piece;
-                            slot.dataset.piece = draggedElement.dataset.piece;
-                            slot.style.background = 'linear-gradient(45deg, #3a86ff, #8338ec)';
-                            slot.style.border = '2px solid #fff';
-                            
-                            draggedElement.remove();
-                            this.placedCount++;
-                            this.sound.correct();
-                        }
-                    });
-                });
-            }
-
-            checkPuzzle() {
-                const slots = this.container.querySelectorAll('.puzzle-grid .puzzle-piece');
-                let correctCount = 0;
-
-                slots.forEach((slot, index) => {
-                    if (slot.dataset.piece === this.correctOrder[index]) {
-                        slot.classList.add('correct');
-                        correctCount++;
-                    }
-                });
-
-                const resultDiv = document.getElementById('bossPuzzleResult');
-                const accuracy = (correctCount / this.pieces.length) * 100;
-
-                if(correctCount === this.pieces.length) {
-                    resultDiv.innerHTML = '<span style="color: #00f5ff;">🎉 ¡Puzzle completado perfectamente!</span>';
-                    this.bossBattle.addScore(200);
-                    showAchievement('¡Rompecabezas perfecto! +200 puntos');
-                    setTimeout(() => this.bossBattle.nextStage(), 2000);
-                } else if(accuracy >= 70) {
-                    resultDiv.innerHTML = `<span style="color: #ffaa00;">Bien! ${correctCount}/${this.pieces.length} correctas</span>`;
-                    this.bossBattle.addScore(Math.floor(accuracy));
-                    showAchievement(`Parcialmente correcto! +${Math.floor(accuracy)} puntos`);
-                    setTimeout(() => this.bossBattle.nextStage(), 2000);
-                } else {
-                    resultDiv.innerHTML = `<span style="color: #ff006e;">Necesitas al menos 70% correcto. Tienes ${Math.floor(accuracy)}%</span>`;
-                    this.sound.incorrect();
-                    
-                    // Reset puzzle
-                    setTimeout(() => {
-                        slots.forEach(slot => {
-                            if(!slot.classList.contains('correct')) {
-                                const scrambleArea = document.getElementById('bossPuzzleScramble');
-                                if(slot.dataset.piece) {
-                                    const piece = document.createElement('div');
-                                    piece.className = 'puzzle-piece';
-                                    piece.draggable = true;
-                                    piece.dataset.piece = slot.dataset.piece;
-                                    piece.textContent = slot.dataset.piece;
-                                    
-                                    piece.addEventListener('dragstart', e => {
-                                        draggedElement = piece;
-                                        e.dataTransfer.effectAllowed = 'move';
-                                    });
-                                    
-                                    scrambleArea.appendChild(piece);
-                                }
-                                
-                                slot.textContent = '?';
-                                slot.dataset.piece = '';
-                                slot.style.background = 'rgba(131, 56, 236, 0.2)';
-                                slot.style.border = '2px dashed #8338ec';
-                                slot.classList.remove('correct');
-                            }
-                        });
-                        resultDiv.innerHTML = '';
-                    }, 2000);
-                }
-            }
-        }
-
-        // STAGE 3: Fighter Battle - Broccoli vs Hamburger
-        class BossStageFight {
-            constructor(bossBattle) {
-                this.bossBattle = bossBattle;
-                this.container = bossBattle.container;
-                this.sound = bossBattle.sound;
-
-                this.playerHealth = 100;
-                this.enemyHealth = 100;
-                this.playerAttack = 15;
-                this.enemyAttack = 12;
-                this.isPlayerTurn = true;
-                this.battleEnded = false;
-                this.playerElement = null;
-                this.enemyElement = null;
-            }
-
-            start() {
-                this.container.innerHTML = `
-                    <h3 style="color: #ff006e; text-align: center; margin-bottom: 20px;">⚔️ Etapa 3: Batalla Épica</h3>
-                    <p style="text-align: center; margin-bottom: 20px; color: #ccc;">¡Brócoli Saludable vs Hamburguesa Malvada!</p>
-                    
-                    <div class="fighter-arena">
-                        <div class="health-bar player">
-                            <div class="health-fill player" id="playerHealthFill" style="width: 100%;"></div>
-                        </div>
-                        <div class="health-bar enemy">
-                            <div class="health-fill enemy" id="enemyHealthFill" style="width: 100%;"></div>
-                        </div>
-                        
-                        <div class="fighter player" id="playerFighter">🥦</div>
-                        <div class="fighter enemy" id="enemyFighter">🍔</div>
-                        
-                        <div style="position: absolute; top: 50px; left: 20px; color: #00f5ff; font-family: 'Orbitron', monospace;">
-                            <div>Brócoli HP: <span id="playerHPText">100</span></div>
-                        </div>
-                        <div style="position: absolute; top: 50px; right: 20px; color: #ff006e; font-family: 'Orbitron', monospace;">
-                            <div>Hamburguesa HP: <span id="enemyHPText">100</span></div>
-                        </div>
-                    </div>
-                    
-                    <div class="fighter-controls">
-                        <button id="attackBtn" class="fighter-btn">⚔️ Atacar</button>
-                        <button id="defendBtn" class="fighter-btn">🛡️ Defenderse</button>
-                        <button id="healBtn" class="fighter-btn">💚 Curar (+20 HP)</button>
-                    </div>
-                    
-                    <div id="battleLog" style="text-align: center; margin-top: 20px; min-height: 60px; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; color: #ccc;">
-                        ¡La batalla comienza! Es tu turno.
-                    </div>
-                `;
-
-                this.playerHealth = 100;
-                this.enemyHealth = 100;
-                this.isPlayerTurn = true;
-                this.battleEnded = false;
-                
-                this.playerElement = document.getElementById('playerFighter');
-                this.enemyElement = document.getElementById('enemyFighter');
-
-                document.getElementById('attackBtn').onclick = () => this.playerAttackAction();
-                document.getElementById('defendBtn').onclick = () => this.playerDefendAction();
-                document.getElementById('healBtn').onclick = () => this.playerHealAction();
-
-                this.updateDisplay();
-            }
-
-            playerAttackAction() {
-                if (!this.isPlayerTurn || this.battleEnded) return;
-                
-                const damage = this.playerAttack + Math.floor(Math.random() * 10);
-                this.enemyHealth = Math.max(0, this.enemyHealth - damage);
-                
-                this.playerElement.classList.add('attacking');
-                this.enemyElement.classList.add('hit');
-                this.sound.correct();
-                
-                this.logMessage(`🥦 Brócoli ataca por ${damage} de daño!`);
-                
-                setTimeout(() => {
-                    this.playerElement.classList.remove('attacking');
-                    this.enemyElement.classList.remove('hit');
-                    this.checkBattleEnd() || this.enemyTurn();
-                }, 600);
-
-                this.isPlayerTurn = false;
-                this.updateDisplay();
-                this.disableButtons();
-            }
-
-            playerDefendAction() {
-                if (!this.isPlayerTurn || this.battleEnded) return;
-                
-                this.logMessage('🥦 Brócoli se defiende! Reducirá el próximo daño.');
-                this.playerDefending = true;
-                
-                this.isPlayerTurn = false;
-                this.updateDisplay();
-                this.disableButtons();
-                
-                setTimeout(() => {
-                    this.checkBattleEnd() || this.enemyTurn();
-                }, 1000);
-            }
-
-            playerHealAction() {
-                if (!this.isPlayerTurn || this.battleEnded) return;
-                
-                const healAmount = 20;
-                this.playerHealth = Math.min(100, this.playerHealth + healAmount);
-                
-                this.sound.powerup();
-                this.logMessage(`🥦 Brócoli se cura por ${healAmount} HP!`);
-                showAchievement(`¡Curación! +${healAmount} HP`);
-                
-                this.isPlayerTurn = false;
-                this.updateDisplay();
-                this.disableButtons();
-                
-                setTimeout(() => {
-                    this.checkBattleEnd() || this.enemyTurn();
-                }, 1000);
-            }
-
-            enemyTurn() {
-                if (this.battleEnded) return;
-                
-                setTimeout(() => {
-                    const action = Math.random();
-                    let damage = this.enemyAttack + Math.floor(Math.random() * 8);
-                    
-                    if (this.playerDefending) {
-                        damage = Math.floor(damage / 2);
-                        this.playerDefending = false;
-                        this.logMessage(`🍔 Hamburguesa ataca por ${damage} (reducido por defensa)!`);
-                    } else {
-                        this.logMessage(`🍔 Hamburguesa ataca por ${damage} de daño!`);
-                    }
-                    
-                    this.playerHealth = Math.max(0, this.playerHealth - damage);
-                    
-                    this.enemyElement.classList.add('attacking');
-                    this.playerElement.classList.add('hit');
-                    this.sound.incorrect();
-                    
-                    setTimeout(() => {
-                        this.enemyElement.classList.remove('attacking');
-                        this.playerElement.classList.remove('hit');
-                        
-                        if (!this.checkBattleEnd()) {
-                            this.isPlayerTurn = true;
-                            this.enableButtons();
-                            this.logMessage('Es tu turno!');
-                        }
-                    }, 600);
-
-                    this.updateDisplay();
-                }, 1500);
-            }
-
-            checkBattleEnd() {
-                if (this.playerHealth <= 0) {
-                    this.battleEnded = true;
-                    this.logMessage('💀 ¡El Brócoli ha sido derrotado!');
-                    setTimeout(() => this.bossBattle.finish(false), 2000);
-                    return true;
-                }
-                
-                if (this.enemyHealth <= 0) {
-                    this.battleEnded = true;
-                    this.logMessage('🏆 ¡La Hamburguesa ha sido derrotada!');
-                    this.bossBattle.addScore(300);
-                    showAchievement('¡Victoria épica! +300 puntos');
-                    setTimeout(() => this.bossBattle.finish(true), 2000);
-                    return true;
-                }
-                
-                return false;
-            }
-
-            updateDisplay() {
-                document.getElementById('playerHealthFill').style.width = this.playerHealth + '%';
-                document.getElementById('enemyHealthFill').style.width = this.enemyHealth + '%';
-                document.getElementById('playerHPText').textContent = this.playerHealth;
-                document.getElementById('enemyHPText').textContent = this.enemyHealth;
-            }
-
-            disableButtons() {
-                document.getElementById('attackBtn').disabled = true;
-                document.getElementById('defendBtn').disabled = true;
-                document.getElementById('healBtn').disabled = true;
-            }
-
-            enableButtons() {
-                document.getElementById('attackBtn').disabled = false;
-                document.getElementById('defendBtn').disabled = false;
-                document.getElementById('healBtn').disabled = false;
-            }
-
-            logMessage(message) {
-                document.getElementById('battleLog').textContent = message;
-            }
-        }
-
-        // Game Management
+        // Modal Handling
         const modal = document.getElementById('gameModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const progressBar = document.getElementById('gameProgress');
-        const gameTimer = document.getElementById('gameTimer');
         const gameArea = document.getElementById('gameArea');
+        const gameProgress = document.getElementById('gameProgress');
+        const gameTimer = document.getElementById('gameTimer');
+        const currentScore = document.getElementById('currentScore');
 
         let currentGameInstance = null;
 
-        function openGame(gameKey) {
+        function openGame() {
             modal.style.display = 'flex';
-            state.currentGame = gameKey;
-            
-            const finishHandler = (finalScore) => {
-                showAchievement(`¡Juego completado! Puntos finales: ${finalScore}`);
-                
-                const scoreKey = gameKey.charAt(0) + gameKey.charAt(gameKey.length-4) + 'Score';
-                const currentBest = state.loadData(scoreKey, 0);
-                if(finalScore > currentBest) {
-                    localStorage.setItem(scoreKey, finalScore);
-                    document.getElementById(scoreKey).textContent = finalScore;
-                    showAchievement('¡Nuevo récord personal!');
-                }
-                
-                state.totalPoints += finalScore;
-                state.saveData();
-                state.updateUI();
-                
-                setTimeout(() => closeGame(), 3000);
-            };
+            gameArea.innerHTML = '';
+            gameProgress.style.width = '0%';
+            gameTimer.textContent = '60';
+            currentScore.textContent = '0';
 
-            switch(gameKey) {
-                case 'nutritionQuiz':
-                    modalTitle.textContent = '🧠 NUTRI QUIZ';
-                    currentGameInstance = new NutriQuiz(gameArea, progressBar, gameTimer, sound, finishHandler);
-                    break;
-                    
-                case 'memoryGame':
-                    modalTitle.textContent = '🧩 MEMORIA NUTRITIVA';
-                    currentGameInstance = new MemoryGame(gameArea, progressBar, gameTimer, sound, finishHandler);
-                    break;
-                    
-                case 'puzzleGame':
-                    modalTitle.textContent = '🔧 PUZZLE NUTRICIONAL';
-                    currentGameInstance = new PuzzleGame(gameArea, progressBar, gameTimer, sound, finishHandler);
-                    break;
-                    
-                case 'bossBattle':
-                    modalTitle.textContent = '⚔️ BOSS BATTLE';
-                    currentGameInstance = new BossBattle(gameArea, progressBar, gameTimer, sound, finishHandler);
-                    break;
-                    
-                default:
-                    gameArea.innerHTML = `
-                        <div style="text-align: center; padding: 50px;">
-                            <div style="font-size: 4em; margin-bottom: 20px;">🚧</div>
-                            <h3 style="color: #8338ec; margin-bottom: 15px;">Próximamente</h3>
-                            <p style="color: #ccc;">Este juego estará disponible en una futura actualización.</p>
-                        </div>
-                    `;
-                    progressBar.style.width = '0%';
-                    gameTimer.textContent = '';
-                    document.getElementById('currentScore').textContent = 'Puntos: 0';
-                    return;
-            }
-            
+            currentGameInstance = new NutriQuiz(gameArea, gameProgress, gameTimer, sound);
             currentGameInstance.start();
         }
 
         function closeGame() {
             modal.style.display = 'none';
-
-            if(currentGameInstance) {
-                if(currentGameInstance.timerId) clearInterval(currentGameInstance.timerId);
-                if(currentGameInstance.gameLoop) clearInterval(currentGameInstance.gameLoop);
-                if(currentGameInstance.timerInterval) clearInterval(currentGameInstance.timerInterval);
-                currentGameInstance = null;
+            if(currentGameInstance && currentGameInstance.timerId) {
+                clearInterval(currentGameInstance.timerId);
             }
-
-            gameArea.innerHTML = '';
-            progressBar.style.width = '0%';
-            gameTimer.textContent = '';
-            document.getElementById('currentScore').textContent = 'Puntos: 0';
         }
 
-        // Initialize particles
+        // Close modal on click outside
+        window.onclick = function(e) {
+            if(e.target === modal) closeGame();
+        }
+
+        // Create particles for background
         function createParticles() {
-            const particles = document.querySelector('.particles');
-            for (let i = 0; i < 50; i++) {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particles.appendChild(particle);
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 4 + 2;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
             }
         }
 
-        // Load saved scores
-        function loadScores() {
-            const scores = ['nqScore', 'mgScore', 'pgScore', 'bbScore'];
-            scores.forEach(scoreId => {
-                try {
-                    const score = localStorage.getItem(scoreId) || '0';
-                    const element = document.getElementById(scoreId);
-                    if(element) element.textContent = score;
-                } catch(e) {
-                    console.warn('Could not load score:', scoreId);
-                }
-            });
-        }
-
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            loadScores();
-            
-            // Modal click outside to close
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeGame();
-                }
-            });
-
-            // Keyboard shortcuts for games
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeGame();
-                }
-            });
-        });
+        // Initialize the page
+        createParticles();
     </script>
 </body>
 </html>

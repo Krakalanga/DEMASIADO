@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NutriVida - Alimentación Saludable</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css" />
+  <style>
+    /* ===== GENERAL ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #1e293b;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(30, 41, 59, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #60a5fa;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #e2e8f0;
+      font-weight: 500;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-links li a:hover {
+      color: #60a5fa;
+    }
+
+    .nav-links li a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #60a5fa;
+      transition: width 0.3s;
+    }
+
+    .nav-links li a:hover::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 2rem;
+      color: #e2e8f0;
+      cursor: pointer;
+    }
+    img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* o contain */
+}
+
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(17, 24, 39, 0.9)), 
+                  url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1920&q=80') center/cover;
+      position: relative;
+      overflow: hidden;
+      padding: 0 1rem;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(37, 99, 235, 0.4));
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .hero h2 {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+      line-height: 1.2;
+    }
+
+    .hero h2 .highlight {
+      color: #60a5fa;
+      display: block;
+      font-size: 4.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2.5rem;
+      color: #e2e8f0;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      line-height: 1.8;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+      box-shadow: 0 5px 15px rgba(96,165,250,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(96,165,250,0.5);
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .section.alt {
+      background-color: #111827;
+    }
+
+    .section h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #60a5fa;
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #60a5fa, #3b82f6);
+      border-radius: 2px;
+    }
+
+    /* ===== CONTENT WITH IMAGE ===== */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .content-text {
+      text-align: left;
+    }
+
+    .content-text p {
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 350px;
+      background: linear-gradient(135deg, #334155, #1e293b);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 1.2rem;
+      border: 2px dashed #475569;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+
+    .image-placeholder:hover {
+      border-color: #60a5fa;
+      transform: scale(1.02);
+    }
+
+    .image-placeholder span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== STATS SECTION ===== */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #334155, #1e293b);
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid #475569;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(96,165,250,0.3);
+      border-color: #60a5fa;
+    }
+
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card h3 {
+      color: #60a5fa;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card p {
+      color: #cbd5e1;
+      font-size: 1rem;
+    }
+
+    /* ===== VIDEO ===== */
+    .video-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+      margin-top: 2rem;
+      border: 2px solid #334155;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+    }
+
+    /* ===== GALLERY ===== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .gallery-item {
+      height: 300px;
+      background: linear-gradient(135deg, #334155, #1e293b);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      border: 2px dashed #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-item::before {
+      content: '🖼️';
+      font-size: 4rem;
+      opacity: 0.3;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      border-color: #60a5fa;
+      box-shadow: 0 10px 30px rgba(96,165,250,0.3);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-secondary {
+      display: inline-block;
+      background: linear-gradient(135deg, #2563eb, #1e40af);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-top: 2rem;
+      box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(37,99,235,0.5);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: linear-gradient(135deg, #0f172a, #020617);
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #94a3b8;
+      border-top: 1px solid #334155;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 968px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        background: rgba(30,41,59,0.98);
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 250px;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .section h2 {
+        font-size: 2rem;
+      }
+
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container">
+      <h1 class="logo">🍎 NutriVida</h1>
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#justificacion">Justificación</a></li>
+          <li><a href="#publico">Público</a></li>
+          <li><a href="#problematica">Problemática</a></li>
+          <li><a href="#planificacion">Planificación</a></li>
+          <li><a href="#estadisticas">Estadísticas</a></li>
+          <li><a href="#video">Video</a></li>
+     
+          <li><a href="#reflexion">Reflexión</a></li>
+          <li><a href="#juego">Juego</a></li>
+        </ul>
+        <div class="menu-toggle" id="menuToggle">☰</div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="inicio" class="hero">
+    <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
+      <h2>Vive, Trabaja & Explora
+        <span class="highlight">Una Vida Saludable</span>
+      </h2>
+      <p>Tu aventura hacia el bienestar comienza aquí. Descubre cómo una alimentación saludable puede transformar tu vida mientras aprendes y te diviertes.</p>
+      <a href="#video" class="btn-primary">Comienza Tu Aventura</a>
+    </div>
+  </section>
+
+  <!-- JUSTIFICACIÓN -->
+  <section id="justificacion" class="section">
+    <div class="container">
+      <h2 data-aos="fade-up">Justificación</h2>
+      <div class="content-grid" data-aos="fade-right" data-aos-delay="200">
+        <div class="content-text">
+          <p>El proyecto NutriVida busca generar conciencia sobre la importancia de una alimentación saludable, fomentando buenos hábitos en niños, jóvenes y adultos mediante actividades interactivas y recursos visuales.</p>
+          <p>Promovemos el conocimiento sobre nutrición basado en evidencia científica, haciendo énfasis en la prevención de enfermedades crónicas relacionadas con la mala alimentación.</p>
+        </div>
+        <div class="image-placeholder" data-aos="zoom-in" data-aos-delay="400">
+          <img src="imagenes/Saludable.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PÚBLICO -->
+  <section id="publico" class="section alt">
+    <div class="container">
+      <h2 data-aos="fade-up">Público Objetivo</h2>
+      <div class="content-grid" data-aos="fade-left" data-aos-delay="200">
+       
+        <div class="content-text">
+          <p>Está dirigido principalmente a estudiantes y familias interesadas en aprender a mejorar su alimentación diaria, comprendiendo la relación entre los alimentos y la salud física y mental.</p>
+          <p>Nos enfocamos en crear contenido accesible y didáctico que permita a personas de todas las edades tomar mejores decisiones alimenticias en su vida cotidiana.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMÁTICA -->
+  <section id="problematica" class="section">
+    <div class="container">
+      <h2 data-aos="fade-up">Problemática</h2>
+      <div class="content-grid" data-aos="fade-right" data-aos-delay="200">
+        <div class="content-text">
+          <p>Hoy en día, muchas personas desconocen los riesgos de una mala alimentación. La obesidad, diabetes y enfermedades cardiovasculares aumentan cada año debido a hábitos alimenticios inadecuados.</p>
+          <p>Este proyecto pretende disminuir la desinformación y promover el acceso a conocimientos simples y prácticos sobre nutrición que puedan ser aplicados inmediatamente en la vida diaria.</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANIFICACIÓN -->
+  <section id="planificacion" class="section alt">
+    <div class="container">
+      <h2 data-aos="fade-up">Planificación</h2>
+      <div class="content-grid" data-aos="fade-left" data-aos-delay="200">
+        <div class="image-placeholder" data-aos="zoom-in" data-aos-delay="400">
+          <img src="imagenes/PLANIFICACION.png" alt="">
+        </div>
+        <div class="content-text">
+          <p>La iniciativa se organiza en etapas que incluyen la investigación científica, desarrollo de material educativo, creación de contenido audiovisual y actividades participativas para reforzar los aprendizajes.</p>
+          <p>Cada fase está diseñada para maximizar el impacto educativo y garantizar que los conocimientos adquiridos sean duraderos y aplicables en el día a día.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTADÍSTICAS -->
+  <section id="estadisticas" class="section">
+    <div class="container">
+      <h2 data-aos="fade-up">Datos Importantes</h2>
+      <div class="stats-container">
+        <div class="stat-card" data-aos="flip-left" data-aos-delay="100">
+          <div class="stat-icon">🥗</div>
+          <h3>La mayor parte</h3>
+          <p>De las enfermedades crónicas pueden prevenirse con buena alimentación</p>
+        </div>
+        <div class="stat-card" data-aos="flip-left" data-aos-delay="200">
+          <div class="stat-icon">💪</div>
+          <h3>5+</h3>
+          <p>Porciones de frutas y verduras recomendadas al día</p>
+        </div>
+        <div class="stat-card" data-aos="flip-left" data-aos-delay="300">
+          <div class="stat-icon">❤️</div>
+          <h3>30%</h3>
+          <p>Reducción en riesgo cardiovascular con dieta saludable</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section id="video" class="section alt">
+    <div class="container video-container">
+      <h2 data-aos="fade-up">Video Educativo</h2>
+      <p style="text-align: center; color: #cbd5e1; margin-bottom: 1rem;" data-aos="fade-up" data-aos-delay="100">
+        Descubre los fundamentos de una alimentación balanceada y cómo implementarla en tu vida diaria.
+      </p>
+      <div class="video-wrapper" data-aos="zoom-in" data-aos-delay="200">
+        <iframe 
+          src="https://www.youtube.com/embed/JDJ2GxVatUA" 
+          title="Video Educativo Alimentación Saludable"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+ 
+
+  <!-- REFLEXIÓN -->
+  <section id="reflexion" class="section alt">
+    <div class="container">
+      <h2 data-aos="fade-up">Reflexión</h2>
+      <div class="content-grid" data-aos="fade-up" data-aos-delay="200">
+        <div class="content-text">
+          <p>Una buena alimentación no solo impacta nuestro cuerpo, sino también nuestra mente y energía. La comida que elegimos tiene el poder de transformar nuestra calidad de vida.</p>
+          <p>Aprender a comer mejor es un paso esencial hacia una vida más plena, saludable y consciente. Cada decisión alimenticia es una oportunidad para cuidar de nosotros mismos.</p>
+        </div>
+        <div class="image-placeholder" data-aos="zoom-in" data-aos-delay="400">
+         <img src="imagenes/pulgar-arriba-emoticon_1303870-11.jpg" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JUEGOS -->
+  <section id="juego" class="section">
+    <div class="container" style="text-align: center;">
+      <h2 data-aos="fade-up">Juego Educativos</h2>
+      <div class="image-placeholder" style="max-width: 600px; margin: 2rem auto; height: 300px;" data-aos="zoom-in" data-aos-delay="200">
+        <img src="imagenes/{A3D6BF28-AF3D-4B72-B15E-99823EA86C1E}.png" alt="">
+      </div>
+      <p data-aos="fade-up" data-aos-delay="300" style="color: #cbd5e1; margin-bottom: 1rem;">
+        Refuerza tus conocimientos con juegos interactivos sobre alimentos saludables y estilos de vida equilibrados.
+      </p>
+      <a href="Juegos.html" target="_blank" class="btn-secondary" data-aos="fade-up" data-aos-delay="400">🎮 Jugar Ahora</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 NutriVida. Todos los derechos reservados.</p>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem;">Proyecto de Feria Científica - Promoviendo la Salud a través de la Educación</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
+  <script>
+    // ===== AOS (Animate On Scroll) =====
+    AOS.init({
+      duration: 1000,
+      once: true,
+      offset: 100
+    });
+
+    // ===== Smooth Scroll para enlaces de navegación =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const navLinks = document.querySelector('.nav-links');
+          navLinks.classList.remove('active');
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // ===== Toggle menú móvil =====
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // ===== Navbar efecto scroll =====
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)';
+      } else {
+        navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+      }
+    });
+
+    // ===== Efecto parallax sutil en Hero =====
+    const hero = document.querySelector('.hero');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      if (hero && scrolled < window.innerHeight) {
+        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+      }
+    });
+
+    // ===== Mensaje de bienvenida en consola =====
+    console.log('%c🍎 NutriVida - Alimentación Saludable', 'font-size: 20px; color: #60a5fa; font-weight: bold;');
+    console.log('%c¡Gracias por visitar nuestro proyecto de feria científica!', 'font-size: 14px; color: #cbd5e1;');
+  </script>
+</body>
+</html>
